@@ -97,10 +97,6 @@ tr:hover td{background:#F8FAFC}
 
 @media(max-width:1200px){.kpi-row{grid-template-columns:repeat(3,1fr)}.grid-2{grid-template-columns:1fr}}
 </style>
-<meta property="og:title" content="海外劳务工报账运营质量看板">
-<meta property="og:description" content="海外劳务工报账运营质量看板 - 数据周期：2026年4月">
-<meta property="og:type" content="website">
-<meta property="og:url" content="https://liuyan185.github.io/overseas-labor-quality-dashboard/">
 </head>
 <body>
 <div class="header">
@@ -114,9 +110,9 @@ tr:hover td{background:#F8FAFC}
 <div class="container">
   <div class="summary-panel" id="summaryPanel">
     <h3>经营总结</h3>
-    <div id="summaryContent"><div class="summary-item"><span class="bullet red"></span><span>4月报账 <strong>1876次</strong>，差错 <strong>65次</strong>，整体差错率 <strong>3.46%</strong>。差错集中在供应商端（46次，70.8%）和仓库端（19次，29.2%）。</span></div><div class="summary-item"><span class="bullet orange"></span><span><b>GEU差错率最高 21.82%</b>，法国区供应商差错10次（差错率38.46%），需重点介入供应商管理。</span></div><div class="summary-item"><span class="bullet orange"></span><span><b>FBU英国区</b>差错20次（差错率17.09%），供应商差错16次+仓库4次，建议开展专项质量审查。</span></div><div class="summary-item"><span class="bullet blue"></span><span><b>加拿大区</b>差错率16.67%，<b>GUS美西大区</b>差错率10.14%，需关注报账规范性。</span></div><div class="summary-item"><span class="bullet green"></span><span><b>零差错</b>：LBU（11区域）、WX（8区域）、FBU亚太区（3区域）均零差错，共覆盖 <em>34个区域</em>，建议推广经验。</span></div></div>
+    <div id="summaryContent"><div class="summary-item"><span class="bullet red"></span><span>4月报账 <strong>1876次</strong>，差错 <strong>65次</strong>，整体差错率 <strong>3.46%</strong>。差错集中在供应商端（46次，70.8%）和仓库端（19次，29.2%）。</span></div><div class="summary-item"><span class="bullet orange"></span><span><b>GEU差错率最高 21.82%</b>，法国区供应商差错10次（差错率38.46%），需重点介入供应商管理。</span></div><div class="summary-item"><span class="bullet orange"></span><span><b>FBU英国区</b>差错20次（差错率17.09%），供应商差错16次+仓库4次，建议开展专项质量审查。</span></div><div class="summary-item"><span class="bullet blue"></span><span><b>加拿大区</b>差错率16.67%，<b>GUS美西大区</b>差错率10.14%，需关注报账规范性。</span></div><div class="summary-item"><span class="bullet green"></span><span><b>零差错</b>：LBU（11区域）、PBU（8区域）、FBU亚太区（3区域）均零差错，共覆盖 <em>34个区域</em>，建议推广经验。</span></div></div>
   </div>
-  <div class="kpi-row" id="kpiRow"><div class="kpi-card "><div class="label">总工时（4月）</div><div><span class="value">1533.02</span><span class="unit">小时</span></div></div><div class="kpi-card "><div class="label">总报账次数</div><div><span class="value">1876</span><span class="unit">次</span></div></div><div class="kpi-card warn"><div class="label">总差错次数</div><div><span class="value" style="color:#DC2626">65</span><span class="unit">次</span></div></div><div class="kpi-card warn"><div class="label">整体差错率</div><div><span class="value" style="color:#DC2626">3.46</span><span class="unit">%</span></div></div><div class="kpi-card "><div class="label">涉及BU数</div><div><span class="value">3</span><span class="unit">个</span></div></div><div class="kpi-card "><div class="label">问题区域数</div><div><span class="value">16</span><span class="unit">个</span></div></div></div>
+  <div class="kpi-row" id="kpiRow"><div class="kpi-card "><div class="label">总工时</div><div><span class="value">1533.02</span><span class="unit">小时</span></div></div><div class="kpi-card "><div class="label">总报账次数</div><div><span class="value">1876</span><span class="unit">次</span></div></div><div class="kpi-card warn"><div class="label">总差错次数</div><div><span class="value" style="color:#DC2626">65</span><span class="unit">次</span></div></div><div class="kpi-card warn"><div class="label">整体差错率</div><div><span class="value" style="color:#DC2626">3.46</span><span class="unit">%</span></div></div><div class="kpi-card "><div class="label">涉及BU数</div><div><span class="value">3</span><span class="unit">个</span></div></div><div class="kpi-card "><div class="label">问题区域数</div><div><span class="value">16</span><span class="unit">个</span></div></div></div>
 
   <div class="tab-hint">点击可切换板块</div>
   <div class="tab-nav">
@@ -135,9 +131,9 @@ tr:hover td{background:#F8FAFC}
             <button class="chart-drill-btn" id="drillBarBtn1" onclick="setBarDrill('zone')">按大区</button>
           </div>
         </div>
-        <div class="chart-wrap compact" id="chart-bu-bar" _echarts_instance_="ec_1779869035649" style="user-select: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0); position: relative;"><div style="position: relative; width: 537px; height: 280px; padding: 0px; margin: 0px; border-width: 0px;"><canvas data-zr-dom-id="zr_0" width="671" height="350" style="position: absolute; left: 0px; top: 0px; width: 537px; height: 280px; user-select: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0); padding: 0px; margin: 0px; border-width: 0px;"></canvas></div><div class=""></div></div>
+        <div class="chart-wrap compact" id="chart-bu-bar" _echarts_instance_="ec_1779884925067" style="user-select: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0); position: relative;"><div style="position: relative; width: 537px; height: 280px; padding: 0px; margin: 0px; border-width: 0px;"><canvas data-zr-dom-id="zr_0" width="671" height="350" style="position: absolute; left: 0px; top: 0px; width: 537px; height: 280px; user-select: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0); padding: 0px; margin: 0px; border-width: 0px;"></canvas></div><div class=""></div></div>
       </div>
-      <div class="panel"><div class="panel-header"><h3>问题区域TOP10（差错率排序）</h3></div><div class="chart-wrap compact" id="chart-top10-region" _echarts_instance_="ec_1779869035652" style="user-select: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0); position: relative;"><div style="position: relative; width: 536px; height: 280px; padding: 0px; margin: 0px; border-width: 0px;"><canvas data-zr-dom-id="zr_0" width="670" height="350" style="position: absolute; left: 0px; top: 0px; width: 536px; height: 280px; user-select: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0); padding: 0px; margin: 0px; border-width: 0px;"></canvas></div><div class=""></div></div></div>
+      <div class="panel"><div class="panel-header"><h3>问题区域TOP10（差错率排序）</h3></div><div class="chart-wrap compact" id="chart-top10-region" _echarts_instance_="ec_1779884925070" style="user-select: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0); position: relative;"><div style="position: relative; width: 536px; height: 280px; padding: 0px; margin: 0px; border-width: 0px;"><canvas data-zr-dom-id="zr_0" width="670" height="350" style="position: absolute; left: 0px; top: 0px; width: 536px; height: 280px; user-select: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0); padding: 0px; margin: 0px; border-width: 0px;"></canvas></div><div class=""></div></div></div>
     </div>
     <div class="grid-2">
       <div class="panel">
@@ -148,9 +144,9 @@ tr:hover td{background:#F8FAFC}
             <button class="chart-drill-btn" id="drillRoleBtn1" onclick="setRoleDrill('zone')">按大区</button>
           </div>
         </div>
-        <div class="chart-wrap" id="chart-bu-role-stack" _echarts_instance_="ec_1779869035650" style="user-select: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0); position: relative;"><div style="position: relative; width: 537px; height: 340px; padding: 0px; margin: 0px; border-width: 0px;"><canvas data-zr-dom-id="zr_0" width="671" height="425" style="position: absolute; left: 0px; top: 0px; width: 537px; height: 340px; user-select: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0); padding: 0px; margin: 0px; border-width: 0px;"></canvas></div><div class=""></div></div>
+        <div class="chart-wrap" id="chart-bu-role-stack" _echarts_instance_="ec_1779884925068" style="user-select: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0); position: relative;"><div style="position: relative; width: 537px; height: 340px; padding: 0px; margin: 0px; border-width: 0px;"><canvas data-zr-dom-id="zr_0" width="671" height="425" style="position: absolute; left: 0px; top: 0px; width: 537px; height: 340px; user-select: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0); padding: 0px; margin: 0px; border-width: 0px;"></canvas></div><div class=""></div></div>
       </div>
-      <div class="panel"><div class="panel-header"><h3>差错角色贡献占比</h3></div><div class="chart-wrap" id="chart-role-pie" _echarts_instance_="ec_1779869035651" style="user-select: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0); position: relative;"><div style="position: relative; width: 536px; height: 340px; padding: 0px; margin: 0px; border-width: 0px;"><canvas data-zr-dom-id="zr_0" width="670" height="425" style="position: absolute; left: 0px; top: 0px; width: 536px; height: 340px; user-select: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0); padding: 0px; margin: 0px; border-width: 0px;"></canvas></div><div class=""></div></div></div>
+      <div class="panel"><div class="panel-header"><h3>差错角色贡献占比</h3></div><div class="chart-wrap" id="chart-role-pie" _echarts_instance_="ec_1779884925069" style="user-select: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0); position: relative;"><div style="position: relative; width: 536px; height: 340px; padding: 0px; margin: 0px; border-width: 0px;"><canvas data-zr-dom-id="zr_0" width="670" height="425" style="position: absolute; left: 0px; top: 0px; width: 536px; height: 340px; user-select: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0); padding: 0px; margin: 0px; border-width: 0px;"></canvas></div><div class=""></div></div></div>
     </div>
   </div>
 
@@ -198,8 +194,8 @@ tr:hover td{background:#F8FAFC}
         <td class="text-right">0</td>
         <td class="text-right">0</td>
         <td class="text-right">2</td>
-      </tr><tr class="" style="cursor:pointer" onclick="toggleBuExpand('WX')">
-        <td><span class="badge badge-blue">WX</span></td>
+      </tr><tr class="" style="cursor:pointer" onclick="toggleBuExpand('PBU')">
+        <td><span class="badge badge-blue">PBU</span></td>
         <td class="text-right">87.0</td>
         <td class="text-right">25</td>
         <td class="text-right">0</td>
@@ -271,14 +267,14 @@ const DATA = {
     {bu:"LBU",zone:"亚太区",region:"越南",hours:0.3,count:1,errTotal:0,errRate:0,hssc:0,hsscRate:0,warehouse:0,warehouseRate:0,hrbp:0,hrbpRate:0,supplier:0,supplierRate:0},
     {bu:"LBU",zone:"亚太区",region:"泰国",hours:0.333,count:1,errTotal:0,errRate:0,hssc:0,hsscRate:0,warehouse:0,warehouseRate:0,hrbp:0,hrbpRate:0,supplier:0,supplierRate:0},
     {bu:"LBU",zone:"亚太区",region:"韩国",hours:0.333,count:1,errTotal:0,errRate:0,hssc:0,hsscRate:0,warehouse:0,warehouseRate:0,hrbp:0,hrbpRate:0,supplier:0,supplierRate:0},
-    {bu:"WX",zone:"欧洲区",region:"英国区",hours:10,count:4,errTotal:0,errRate:0,hssc:0,hsscRate:0,warehouse:0,warehouseRate:0,hrbp:0,hrbpRate:0,supplier:0,supplierRate:0},
-    {bu:"WX",zone:"欧洲区",region:"法国区",hours:4,count:1,errTotal:0,errRate:0,hssc:0,hsscRate:0,warehouse:0,warehouseRate:0,hrbp:0,hrbpRate:0,supplier:0,supplierRate:0},
-    {bu:"WX",zone:"欧洲区",region:"西班牙区",hours:4,count:2,errTotal:0,errRate:0,hssc:0,hsscRate:0,warehouse:0,warehouseRate:0,hrbp:0,hrbpRate:0,supplier:0,supplierRate:0},
-    {bu:"WX",zone:"欧洲区",region:"比利时区",hours:10,count:4,errTotal:0,errRate:0,hssc:0,hsscRate:0,warehouse:0,warehouseRate:0,hrbp:0,hrbpRate:0,supplier:0,supplierRate:0},
-    {bu:"WX",zone:"欧洲区",region:"丹麦区",hours:4,count:6,errTotal:0,errRate:0,hssc:0,hsscRate:0,warehouse:0,warehouseRate:0,hrbp:0,hrbpRate:0,supplier:0,supplierRate:0},
-    {bu:"WX",zone:"欧洲区",region:"匈牙利",hours:15,count:1,errTotal:0,errRate:0,hssc:0,hsscRate:0,warehouse:0,warehouseRate:0,hrbp:0,hrbpRate:0,supplier:0,supplierRate:0},
-    {bu:"WX",zone:"欧洲区",region:"意大利",hours:20,count:3,errTotal:0,errRate:0,hssc:0,hsscRate:0,warehouse:0,warehouseRate:0,hrbp:0,hrbpRate:0,supplier:0,supplierRate:0},
-    {bu:"WX",zone:"欧洲区",region:"荷兰",hours:20,count:4,errTotal:0,errRate:0,hssc:0,hsscRate:0,warehouse:0,warehouseRate:0,hrbp:0,hrbpRate:0,supplier:0,supplierRate:0},
+    {bu:"PBU",zone:"欧洲区",region:"英国区",hours:10,count:4,errTotal:0,errRate:0,hssc:0,hsscRate:0,warehouse:0,warehouseRate:0,hrbp:0,hrbpRate:0,supplier:0,supplierRate:0},
+    {bu:"PBU",zone:"欧洲区",region:"法国区",hours:4,count:1,errTotal:0,errRate:0,hssc:0,hsscRate:0,warehouse:0,warehouseRate:0,hrbp:0,hrbpRate:0,supplier:0,supplierRate:0},
+    {bu:"PBU",zone:"欧洲区",region:"西班牙区",hours:4,count:2,errTotal:0,errRate:0,hssc:0,hsscRate:0,warehouse:0,warehouseRate:0,hrbp:0,hrbpRate:0,supplier:0,supplierRate:0},
+    {bu:"PBU",zone:"欧洲区",region:"比利时区",hours:10,count:4,errTotal:0,errRate:0,hssc:0,hsscRate:0,warehouse:0,warehouseRate:0,hrbp:0,hrbpRate:0,supplier:0,supplierRate:0},
+    {bu:"PBU",zone:"欧洲区",region:"丹麦区",hours:4,count:6,errTotal:0,errRate:0,hssc:0,hsscRate:0,warehouse:0,warehouseRate:0,hrbp:0,hrbpRate:0,supplier:0,supplierRate:0},
+    {bu:"PBU",zone:"欧洲区",region:"匈牙利",hours:15,count:1,errTotal:0,errRate:0,hssc:0,hsscRate:0,warehouse:0,warehouseRate:0,hrbp:0,hrbpRate:0,supplier:0,supplierRate:0},
+    {bu:"PBU",zone:"欧洲区",region:"意大利",hours:20,count:3,errTotal:0,errRate:0,hssc:0,hsscRate:0,warehouse:0,warehouseRate:0,hrbp:0,hrbpRate:0,supplier:0,supplierRate:0},
+    {bu:"PBU",zone:"欧洲区",region:"荷兰",hours:20,count:4,errTotal:0,errRate:0,hssc:0,hsscRate:0,warehouse:0,warehouseRate:0,hrbp:0,hrbpRate:0,supplier:0,supplierRate:0},
     {bu:"GUS",zone:"美国",region:"WE 美西大区",hours:100,count:69,errTotal:7,errRate:0.1014,hssc:0,hsscRate:0,warehouse:4,warehouseRate:0.058,hrbp:0,hrbpRate:0,supplier:3,supplierRate:0.0435},
     {bu:"GUS",zone:"美国",region:"NE 东北区",hours:55,count:97,errTotal:2,errRate:0.0206,hssc:0,hsscRate:0,warehouse:1,warehouseRate:0.0103,hrbp:0,hrbpRate:0,supplier:1,supplierRate:0.0103},
     {bu:"GUS",zone:"美国",region:"GL 大湖区",hours:18,count:16,errTotal:1,errRate:0.0625,hssc:0,hsscRate:0,warehouse:0,warehouseRate:0,hrbp:0,hrbpRate:0,supplier:1,supplierRate:0.0625},
@@ -313,7 +309,7 @@ DATA.regions.forEach(r => {
   z.regionCount++;
 });
 
-const buOrder = ['FBU','GUS','GEU','WX','LBU'];
+const buOrder = ['FBU','GUS','GEU','PBU','LBU'];
 const buList = buOrder.filter(b => buSummary[b]);
 const totalHours = buList.reduce((s,b) => s+buSummary[b].hours, 0);
 const totalCount = buList.reduce((s,b) => s+buSummary[b].count, 0);
@@ -381,7 +377,7 @@ function getAxisLabelRotate(level) { return level==='bu' ? 0 : 30; }
 // ========== KPI ==========
 function renderKPI() {
   const cards = [
-    {label:'总工时（4月）',value:totalHours.toFixed(2),unit:'小时',cls:'',red:false},
+    {label:'总工时',value:totalHours.toFixed(2),unit:'小时',cls:'',red:false},
     {label:'总报账次数',value:totalCount,unit:'次',cls:'',red:false},
     {label:'总差错次数',value:totalErr,unit:'次',cls:totalErr>50?'warn':'',red:true},
     {label:'整体差错率',value:(totalErrRate*100).toFixed(2),unit:'%',cls:totalErrRate>0.05?'danger':totalErrRate>0.02?'warn':'',red:true},
@@ -405,7 +401,7 @@ function renderSummary() {
     {bullet:'orange', text:`<b>GEU差错率最高 21.82%</b>，法国区供应商差错10次（差错率${(10/26*100).toFixed(2)}%），需重点介入供应商管理。`},
     {bullet:'orange', text:`<b>FBU英国区</b>差错20次（差错率17.09%），供应商差错16次+仓库4次，建议开展专项质量审查。`},
     {bullet:'blue', text:`<b>加拿大区</b>差错率16.67%，<b>GUS美西大区</b>差错率10.14%，需关注报账规范性。`},
-    {bullet:'green', text:`<b>零差错</b>：LBU（11区域）、WX（8区域）、FBU亚太区（3区域）均零差错，共覆盖 <em>${cr}个区域</em>，建议推广经验。`}
+    {bullet:'green', text:`<b>零差错</b>：LBU（11区域）、PBU（8区域）、FBU亚太区（3区域）均零差错，共覆盖 <em>${cr}个区域</em>，建议推广经验。`}
   ];
   document.getElementById('summaryContent').innerHTML = items.map(i =>
     `<div class="summary-item"><span class="bullet ${i.bullet}"></span><span>${i.text}</span></div>`
