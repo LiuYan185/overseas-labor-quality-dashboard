@@ -1,0 +1,731 @@
+<!DOCTYPE html>
+<html lang="zh-CN"><head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>海外劳务工报账运营质量看板</title>
+<script src="https://cdn.jsdelivr.net/npm/echarts@5.5.0/dist/echarts.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','PingFang SC','Microsoft YaHei',sans-serif;background:#F0F4F8;color:#1E293B}
+.header{background:linear-gradient(135deg,#1E3A5F 0%,#2563EB 50%,#3B82F6 100%);color:#fff;padding:18px 40px;display:flex;justify-content:space-between;align-items:center}
+.header-left h1{font-size:22px;font-weight:600;letter-spacing:.5px}
+.header-sub{font-size:12px;color:rgba(255,255,255,.75);margin-top:4px}
+.header-actions{display:flex;gap:10px}
+.header-actions button{padding:8px 18px;border:none;border-radius:6px;cursor:pointer;font-size:13px;font-weight:500;transition:all .2s;display:flex;align-items:center;gap:6px}
+.btn-download{background:rgba(255,255,255,.2);color:#fff;backdrop-filter:blur(4px)}
+.btn-download:hover{background:rgba(255,255,255,.35);transform:translateY(-1px)}
+.btn-export{background:rgba(255,255,255,.2);color:#fff;border:1.5px solid rgba(255,255,255,.4)!important;backdrop-filter:blur(4px)}
+.btn-export:hover{background:rgba(255,255,255,.35);transform:translateY(-1px)}
+.btn-export:disabled{opacity:.5;cursor:not-allowed;transform:none}
+
+/* Summary */
+.summary-panel{background:#fff;border-radius:10px;padding:10px 20px;box-shadow:0 1px 4px rgba(0,0,0,.06);margin-bottom:12px;border-left:4px solid #3B82F6}
+.summary-panel h3{font-size:13px;color:#1E3A5F;margin-bottom:6px;font-weight:600}
+.summary-item{display:flex;align-items:flex-start;gap:8px;font-size:12px;line-height:1.5;padding:3px 0;border-bottom:1px dashed #F1F5F9}
+.summary-item:last-child{border-bottom:none}
+.summary-item .bullet{width:6px;height:6px;border-radius:50%;flex-shrink:0;margin-top:5px}
+.bullet.red{background:#EF4444}.bullet.orange{background:#F59E0B}.bullet.blue{background:#3B82F6}.bullet.green{background:#16A34A}
+.summary-item strong{color:#DC2626}
+.summary-item em{font-style:normal;color:#2563EB;font-weight:600}
+
+.container{max-width:1440px;margin:0 auto;padding:16px 24px}
+.kpi-row{display:grid;grid-template-columns:repeat(6,1fr);gap:14px;margin-bottom:16px}
+.kpi-card{background:#fff;border-radius:10px;padding:16px 14px;box-shadow:0 1px 4px rgba(0,0,0,.06);border-left:4px solid #3B82F6;transition:transform .2s}
+.kpi-card:hover{transform:translateY(-2px);box-shadow:0 4px 12px rgba(59,130,246,.15)}
+.kpi-card.warn{border-left-color:#F59E0B}.kpi-card.danger{border-left-color:#EF4444}
+.kpi-card .label{font-size:12px;color:#64748B;margin-bottom:4px}
+.kpi-card .value{font-size:24px;font-weight:700;color:#1E3A5F}
+.kpi-card .unit{font-size:13px;color:#64748B;margin-left:4px;font-weight:500}
+
+/* Tabs */
+.tab-hint{background:#DBEAFE;color:#1E3A5F;text-align:center;padding:6px 0;font-size:12px;border-radius:10px 10px 0 0;letter-spacing:.5px;font-weight:700}
+.tab-nav{display:flex;gap:4px;background:#fff;border-radius:0 0 10px 10px;padding:4px;margin-bottom:16px;box-shadow:0 1px 4px rgba(0,0,0,.06)}
+.tab-btn{flex:1;padding:10px 20px;border:none;background:transparent;border-radius:8px;cursor:pointer;font-size:14px;color:#64748B;transition:all .2s;font-weight:500}
+.tab-btn:hover{color:#3B82F6;background:#EFF6FF}
+.tab-btn.active{background:#3B82F6;color:#fff}
+.tab-content{display:none}.tab-content.active{display:block}
+
+/* Grid */
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px}
+
+/* Panel */
+.panel{background:#fff;border-radius:10px;padding:16px;box-shadow:0 1px 4px rgba(0,0,0,.06);margin-bottom:14px}
+.panel-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;padding-bottom:8px;border-bottom:2px solid #EFF6FF}
+.panel-header h3{font-size:14px;color:#1E3A5F;font-weight:600}
+.chart-drill-btn{padding:4px 10px;border:1px solid #CBD5E1;border-radius:5px;background:#fff;color:#475569;font-size:11px;cursor:pointer;transition:all .2s;display:inline-flex;align-items:center;gap:3px}
+.chart-drill-btn:hover{background:#EFF6FF;border-color:#3B82F6;color:#2563EB}
+.chart-drill-btn.active{background:#3B82F6;color:#fff;border-color:#3B82F6}
+.chart-drill-group{display:flex;gap:3px}
+.chart-wrap{width:100%;height:340px}
+.chart-wrap.compact{height:280px}
+
+/* Table */
+table{width:100%;border-collapse:collapse;font-size:12px}
+th{background:#EFF6FF;color:#1E3A5F;padding:6px 6px;text-align:left;font-weight:600;border-bottom:2px solid #DBEAFE;white-space:nowrap;position:sticky;top:0;z-index:2;cursor:pointer;user-select:none}
+th:hover{background:#DBEAFE}
+th .sort-icon{font-size:10px;margin-left:3px;opacity:.4}
+th .sort-icon.active{opacity:1;color:#2563EB}
+td{padding:5px 6px;border-bottom:1px solid #F1F5F9;font-size:12px}
+tr:hover td{background:#F8FAFC}
+.badge{display:inline-block;padding:1px 6px;border-radius:10px;font-size:11px;font-weight:600}
+.badge-blue{background:#DBEAFE;color:#2563EB}
+.rate-high{color:#DC2626;font-weight:700}.rate-mid{color:#D97706;font-weight:700}
+.rate-low{color:#16A34A}.rate-zero{color:#94A3B8}
+.text-right{text-align:right}
+.highlight{background:#FEF3C7!important}
+.footer{text-align:center;padding:20px;color:#94A3B8;font-size:12px}
+
+/* Expandable detail table */
+.expand-row td{padding:0!important;border-bottom:none!important;background:#FAFBFD!important}
+.expand-row:hover td{background:#FAFBFD!important}
+.expand-content{overflow:hidden;transition:max-height .3s ease}
+.expand-content.collapsed{max-height:0}
+.expand-content.expanded{max-height:2000px}
+.sub-table-wrap{padding:4px 0 4px 36px}
+.sub-table-wrap table{font-size:12px}
+.sub-table-wrap th{font-size:11px;padding:7px 8px;background:#F0F4F8}
+.sub-table-wrap td{padding:7px 8px}
+.sub-zone-row{background:#F8FAFC;font-weight:500;cursor:pointer}
+.sub-zone-row:hover{background:#EFF6FF!important}
+.sub-zone-row td{border-bottom:1px solid #E2E8F0}
+.sub-region-row td{padding-left:24px}
+
+/* Drill toggle */
+.drill-toggle{display:inline-flex;align-items:center;gap:3px;font-size:11px;color:#64748B;cursor:pointer;user-select:none;margin-left:6px}
+.drill-toggle:hover{color:#2563EB}
+
+@media(max-width:1200px){.kpi-row{grid-template-columns:repeat(3,1fr)}.grid-2{grid-template-columns:1fr}}
+</style>
+
+<meta property="og:title" content="海外劳务工报账运营质量看板">
+<meta property="og:description" content="海外劳务工报账运营质量看板">
+<meta property="og:type" content="website">
+</head>
+<body>
+<div class="header">
+  <div class="header-left"><h1>海外劳务工报账运营质量看板</h1><div class="header-sub">数据截止至2026年4月</div></div>
+  <div class="header-actions">
+    <button class="btn-download" onclick="downloadHTML()">下载 HTML</button>
+    <button class="btn-export" id="btnExport" onclick="exportPNG()">导出 PNG</button>
+  </div>
+</div>
+
+<div class="container">
+  <div class="summary-panel" id="summaryPanel">
+    <h3>经营总结</h3>
+    <div id="summaryContent"><div class="summary-item"><span class="bullet red"></span><span>4月报账 <strong>1876次</strong>，差错 <strong>65次</strong>，整体差错率 <strong>3.46%</strong>。差错集中在供应商端（46次，70.8%）和仓库端（19次，29.2%）。</span></div><div class="summary-item"><span class="bullet orange"></span><span><b>GEU差错率最高 21.82%</b>，法国区供应商差错10次（差错率38.46%），需重点介入供应商管理。</span></div><div class="summary-item"><span class="bullet orange"></span><span><b>FBU英国区</b>差错20次（差错率17.09%），供应商差错16次+仓库4次，建议开展专项质量审查。</span></div><div class="summary-item"><span class="bullet blue"></span><span><b>加拿大区</b>差错率16.67%，<b>GUS美西大区</b>差错率10.14%，需关注报账规范性。</span></div><div class="summary-item"><span class="bullet green"></span><span><b>零差错</b>：LBU（11区域）、WX（8区域）、FBU亚太区（3区域）均零差错，共覆盖 <em>34个区域</em>，建议推广经验。</span></div></div>
+  </div>
+  <div class="kpi-row" id="kpiRow"><div class="kpi-card "><div class="label">总工时（4月）</div><div><span class="value">1533.02</span><span class="unit">小时</span></div></div><div class="kpi-card "><div class="label">总报账次数</div><div><span class="value">1876</span><span class="unit">次</span></div></div><div class="kpi-card warn"><div class="label">总差错次数</div><div><span class="value" style="color:#DC2626">65</span><span class="unit">次</span></div></div><div class="kpi-card warn"><div class="label">整体差错率</div><div><span class="value" style="color:#DC2626">3.46</span><span class="unit">%</span></div></div><div class="kpi-card "><div class="label">涉及BU数</div><div><span class="value">3</span><span class="unit">个</span></div></div><div class="kpi-card "><div class="label">问题区域数</div><div><span class="value">16</span><span class="unit">个</span></div></div></div>
+
+  <div class="tab-hint">点击可切换板块</div>
+  <div class="tab-nav">
+    <button class="tab-btn active" onclick="switchTab('overview',this)">概览数据</button>
+    <button class="tab-btn" onclick="switchTab('detail',this)">明细数据</button>
+  </div>
+
+  <!-- Tab 1: 概览数据 -->
+  <div class="tab-content active" id="tab-overview">
+    <div class="grid-2">
+      <div class="panel">
+        <div class="panel-header">
+          <h3>差错情况概览</h3>
+          <div class="chart-drill-group">
+            <button class="chart-drill-btn active" id="drillBarBtn0" onclick="setBarDrill('bu')">按BU</button>
+            <button class="chart-drill-btn" id="drillBarBtn1" onclick="setBarDrill('zone')">按大区</button>
+          </div>
+        </div>
+        <div class="chart-wrap compact" id="chart-bu-bar" _echarts_instance_="ec_1779867865187" style="user-select: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0); position: relative;"><div style="position: relative; width: 537px; height: 280px; padding: 0px; margin: 0px; border-width: 0px;"><canvas data-zr-dom-id="zr_0" width="671" height="350" style="position: absolute; left: 0px; top: 0px; width: 537px; height: 280px; user-select: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0); padding: 0px; margin: 0px; border-width: 0px;"></canvas></div><div class=""></div></div>
+      </div>
+      <div class="panel"><div class="panel-header"><h3>问题区域TOP10（差错率排序）</h3></div><div class="chart-wrap compact" id="chart-top10-region" _echarts_instance_="ec_1779867865190" style="user-select: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0); position: relative;"><div style="position: relative; width: 536px; height: 280px; padding: 0px; margin: 0px; border-width: 0px; cursor: default;"><canvas data-zr-dom-id="zr_0" width="670" height="350" style="position: absolute; left: 0px; top: 0px; width: 536px; height: 280px; user-select: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0); padding: 0px; margin: 0px; border-width: 0px;"></canvas></div><div class=""></div></div></div>
+    </div>
+    <div class="grid-2">
+      <div class="panel">
+        <div class="panel-header">
+          <h3>差错角色分布</h3>
+          <div class="chart-drill-group">
+            <button class="chart-drill-btn active" id="drillRoleBtn0" onclick="setRoleDrill('bu')">按BU</button>
+            <button class="chart-drill-btn" id="drillRoleBtn1" onclick="setRoleDrill('zone')">按大区</button>
+          </div>
+        </div>
+        <div class="chart-wrap" id="chart-bu-role-stack" _echarts_instance_="ec_1779867865188" style="user-select: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0); position: relative;"><div style="position: relative; width: 537px; height: 340px; padding: 0px; margin: 0px; border-width: 0px;"><canvas data-zr-dom-id="zr_0" width="671" height="425" style="position: absolute; left: 0px; top: 0px; width: 537px; height: 340px; user-select: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0); padding: 0px; margin: 0px; border-width: 0px;"></canvas></div><div class=""></div></div>
+      </div>
+      <div class="panel"><div class="panel-header"><h3>差错角色贡献占比</h3></div><div class="chart-wrap" id="chart-role-pie" _echarts_instance_="ec_1779867865189" style="user-select: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0); position: relative;"><div style="position: relative; width: 536px; height: 340px; padding: 0px; margin: 0px; border-width: 0px;"><canvas data-zr-dom-id="zr_0" width="670" height="425" style="position: absolute; left: 0px; top: 0px; width: 536px; height: 340px; user-select: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0); padding: 0px; margin: 0px; border-width: 0px;"></canvas></div><div class=""></div></div></div>
+    </div>
+  </div>
+
+  <!-- Tab 2: 明细数据 -->
+  <div class="tab-content" id="tab-detail">
+    <div class="panel">
+      <div class="panel-header">
+        <h3>明细数据表</h3>
+        <div style="display:flex;gap:6px">
+          <button class="chart-drill-btn" onclick="expandTableLevel('zone')">展开至大区</button>
+          <button class="chart-drill-btn" onclick="expandTableLevel('region')">展开至区域</button>
+          <button class="chart-drill-btn" onclick="expandTableLevel('bu')">全部收缩</button>
+        </div>
+      </div>
+      <div style="max-height:520px;overflow:auto" id="detailTable"><table><thead><tr><th onclick="sortTable('name')">BU / 大区 / 区域<span class="sort-icon">⇅</span></th><th class="text-right" onclick="sortTable('hours')">工时(h)<span class="sort-icon">⇅</span></th><th class="text-right" onclick="sortTable('count')">报账次数<span class="sort-icon">⇅</span></th><th class="text-right" onclick="sortTable('errTotal')">总差错<span class="sort-icon">⇅</span></th><th class="text-right" onclick="sortTable('errRate')">差错率<span class="sort-icon">⇅</span></th><th class="text-right" onclick="sortTable('warehouse')">仓库<span class="sort-icon">⇅</span></th><th class="text-right" onclick="sortTable('supplier')">供应商<span class="sort-icon">⇅</span></th><th class="text-right" onclick="sortTable('hssc')">HSSC<span class="sort-icon">⇅</span></th><th class="text-right" onclick="sortTable('hrbp')">HRBP<span class="sort-icon">⇅</span></th><th class="text-right" onclick="sortTable('errRegion')">问题区域<span class="sort-icon">⇅</span></th></tr></thead><tbody><tr class="" style="cursor:pointer" onclick="toggleBuExpand('FBU')">
+        <td><span class="badge badge-blue">FBU</span></td>
+        <td class="text-right">805.0</td>
+        <td class="text-right">1433</td>
+        <td class="text-right">36</td>
+        <td class="text-right"><span class="rate-low">2.51%</span></td>
+        <td class="text-right">13</td>
+        <td class="text-right">23</td>
+        <td class="text-right">0</td>
+        <td class="text-right">0</td>
+        <td class="text-right">7</td>
+      </tr><tr class="" style="cursor:pointer" onclick="toggleBuExpand('GUS')">
+        <td><span class="badge badge-blue">GUS</span></td>
+        <td class="text-right">383.0</td>
+        <td class="text-right">340</td>
+        <td class="text-right">17</td>
+        <td class="text-right"><span class="rate-low">5.00%</span></td>
+        <td class="text-right">6</td>
+        <td class="text-right">11</td>
+        <td class="text-right">0</td>
+        <td class="text-right">0</td>
+        <td class="text-right">7</td>
+      </tr><tr class="" style="cursor:pointer" onclick="toggleBuExpand('GEU')">
+        <td><span class="badge badge-blue">GEU</span></td>
+        <td class="text-right">230.0</td>
+        <td class="text-right">55</td>
+        <td class="text-right">12</td>
+        <td class="text-right"><span class="rate-high">21.82%</span></td>
+        <td class="text-right">0</td>
+        <td class="text-right">12</td>
+        <td class="text-right">0</td>
+        <td class="text-right">0</td>
+        <td class="text-right">2</td>
+      </tr><tr class="" style="cursor:pointer" onclick="toggleBuExpand('WX')">
+        <td><span class="badge badge-blue">WX</span></td>
+        <td class="text-right">87.0</td>
+        <td class="text-right">25</td>
+        <td class="text-right">0</td>
+        <td class="text-right"><span class="rate-zero">0.00%</span></td>
+        <td class="text-right">0</td>
+        <td class="text-right">0</td>
+        <td class="text-right">0</td>
+        <td class="text-right">0</td>
+        <td class="text-right">0</td>
+      </tr><tr class="" style="cursor:pointer" onclick="toggleBuExpand('LBU')">
+        <td><span class="badge badge-blue">LBU</span></td>
+        <td class="text-right">28.0</td>
+        <td class="text-right">23</td>
+        <td class="text-right">0</td>
+        <td class="text-right"><span class="rate-zero">0.00%</span></td>
+        <td class="text-right">0</td>
+        <td class="text-right">0</td>
+        <td class="text-right">0</td>
+        <td class="text-right">0</td>
+        <td class="text-right">0</td>
+      </tr><tr style="border-top:2px solid #DBEAFE;background:#EFF6FF;font-weight:600">
+    <td><b>合计</b></td>
+    <td class="text-right">1533.0</td><td class="text-right">1876</td>
+    <td class="text-right">65</td><td class="text-right">3.46%</td>
+    <td class="text-right">19</td>
+    <td class="text-right">46</td>
+    <td class="text-right">0</td>
+    <td class="text-right">0</td>
+    <td class="text-right">16</td>
+  </tr></tbody></table></div>
+    </div>
+  </div>
+</div>
+<div class="footer">纵腾集团 | 海外劳务工报账运营质量看板 | 2026年4月</div>
+
+<script>
+const DATA = {
+  regions: [
+    {bu:"FBU",zone:"美洲区",region:"加州区",hours:130,count:345,errTotal:5,errRate:0.0145,hssc:0,hsscRate:0,warehouse:5,warehouseRate:0.0145,hrbp:0,hrbpRate:0,supplier:0,supplierRate:0},
+    {bu:"FBU",zone:"美洲区",region:"新泽西区",hours:113.82,count:296,errTotal:0,errRate:0,hssc:0,hsscRate:0,warehouse:0,warehouseRate:0,hrbp:0,hrbpRate:0,supplier:0,supplierRate:0},
+    {bu:"FBU",zone:"美洲区",region:"加拿大区",hours:30,count:36,errTotal:6,errRate:0.1667,hssc:0,hsscRate:0,warehouse:2,warehouseRate:0.0556,hrbp:0,hrbpRate:0,supplier:4,supplierRate:0.1111},
+    {bu:"FBU",zone:"美洲区",region:"芝加哥区",hours:29.5,count:117,errTotal:1,errRate:0.0085,hssc:0,hsscRate:0,warehouse:1,warehouseRate:0.0085,hrbp:0,hrbpRate:0,supplier:0,supplierRate:0},
+    {bu:"FBU",zone:"美洲区",region:"萨凡纳区",hours:20.93,count:106,errTotal:0,errRate:0,hssc:0,hsscRate:0,warehouse:0,warehouseRate:0,hrbp:0,hrbpRate:0,supplier:0,supplierRate:0},
+    {bu:"FBU",zone:"美洲区",region:"亚特兰大区",hours:16.11,count:67,errTotal:2,errRate:0.0299,hssc:0,hsscRate:0,warehouse:0,warehouseRate:0,hrbp:0,hrbpRate:0,supplier:2,supplierRate:0.0299},
+    {bu:"FBU",zone:"美洲区",region:"达拉斯区",hours:6.56,count:22,errTotal:1,errRate:0.0455,hssc:0,hsscRate:0,warehouse:0,warehouseRate:0,hrbp:0,hrbpRate:0,supplier:1,supplierRate:0.0455},
+    {bu:"FBU",zone:"美洲区",region:"西雅图",hours:4,count:5,errTotal:0,errRate:0,hssc:0,hsscRate:0,warehouse:0,warehouseRate:0,hrbp:0,hrbpRate:0,supplier:0,supplierRate:0},
+    {bu:"FBU",zone:"美洲区",region:"诺福克斯",hours:4,count:8,errTotal:0,errRate:0,hssc:0,hsscRate:0,warehouse:0,warehouseRate:0,hrbp:0,hrbpRate:0,supplier:0,supplierRate:0},
+    {bu:"FBU",zone:"美洲区",region:"休斯顿区",hours:2.63,count:21,errTotal:0,errRate:0,hssc:0,hsscRate:0,warehouse:0,warehouseRate:0,hrbp:0,hrbpRate:0,supplier:0,supplierRate:0},
+    {bu:"FBU",zone:"美洲区",region:"墨西哥区",hours:2,count:0,errTotal:0,errRate:0,hssc:0,hsscRate:0,warehouse:0,warehouseRate:0,hrbp:0,hrbpRate:0,supplier:0,supplierRate:0},
+    {bu:"FBU",zone:"美洲区",region:"迈阿密",hours:2,count:9,errTotal:0,errRate:0,hssc:0,hsscRate:0,warehouse:0,warehouseRate:0,hrbp:0,hrbpRate:0,supplier:0,supplierRate:0},
+    {bu:"FBU",zone:"亚太区",region:"澳洲区",hours:18,count:41,errTotal:0,errRate:0,hssc:0,hsscRate:0,warehouse:0,warehouseRate:0,hrbp:0,hrbpRate:0,supplier:0,supplierRate:0},
+    {bu:"FBU",zone:"亚太区",region:"日本区",hours:4,count:5,errTotal:0,errRate:0,hssc:0,hsscRate:0,warehouse:0,warehouseRate:0,hrbp:0,hrbpRate:0,supplier:0,supplierRate:0},
+    {bu:"FBU",zone:"亚太区",region:"韩国区",hours:0.5,count:1,errTotal:0,errRate:0,hssc:0,hsscRate:0,warehouse:0,warehouseRate:0,hrbp:0,hrbpRate:0,supplier:0,supplierRate:0},
+    {bu:"FBU",zone:"欧洲区",region:"法国区",hours:100,count:37,errTotal:0,errRate:0,hssc:0,hsscRate:0,warehouse:0,warehouseRate:0,hrbp:0,hrbpRate:0,supplier:0,supplierRate:0},
+    {bu:"FBU",zone:"欧洲区",region:"波兰区",hours:70,count:18,errTotal:0,errRate:0,hssc:0,hsscRate:0,warehouse:0,warehouseRate:0,hrbp:0,hrbpRate:0,supplier:0,supplierRate:0},
+    {bu:"FBU",zone:"欧洲区",region:"德国区",hours:85,count:96,errTotal:1,errRate:0.0104,hssc:0,hsscRate:0,warehouse:1,warehouseRate:0.0104,hrbp:0,hrbpRate:0,supplier:0,supplierRate:0},
+    {bu:"FBU",zone:"欧洲区",region:"捷克区",hours:80,count:69,errTotal:0,errRate:0,hssc:0,hsscRate:0,warehouse:0,warehouseRate:0,hrbp:0,hrbpRate:0,supplier:0,supplierRate:0},
+    {bu:"FBU",zone:"欧洲区",region:"英国区",hours:65,count:117,errTotal:20,errRate:0.1709,hssc:0,hsscRate:0,warehouse:4,warehouseRate:0.0342,hrbp:0,hrbpRate:0,supplier:16,supplierRate:0.1368},
+    {bu:"FBU",zone:"欧洲区",region:"西班牙",hours:16,count:14,errTotal:0,errRate:0,hssc:0,hsscRate:0,warehouse:0,warehouseRate:0,hrbp:0,hrbpRate:0,supplier:0,supplierRate:0},
+    {bu:"FBU",zone:"欧洲区",region:"意大利",hours:5,count:3,errTotal:0,errRate:0,hssc:0,hsscRate:0,warehouse:0,warehouseRate:0,hrbp:0,hrbpRate:0,supplier:0,supplierRate:0},
+    {bu:"LBU",zone:"欧洲区",region:"荷兰区",hours:10,count:8,errTotal:0,errRate:0,hssc:0,hsscRate:0,warehouse:0,warehouseRate:0,hrbp:0,hrbpRate:0,supplier:0,supplierRate:0},
+    {bu:"LBU",zone:"欧洲区",region:"瑞士区",hours:5,count:1,errTotal:0,errRate:0,hssc:0,hsscRate:0,warehouse:0,warehouseRate:0,hrbp:0,hrbpRate:0,supplier:0,supplierRate:0},
+    {bu:"LBU",zone:"欧洲区",region:"瑞典区",hours:4,count:2,errTotal:0,errRate:0,hssc:0,hsscRate:0,warehouse:0,warehouseRate:0,hrbp:0,hrbpRate:0,supplier:0,supplierRate:0},
+    {bu:"LBU",zone:"欧洲区",region:"德国区",hours:2,count:4,errTotal:0,errRate:0,hssc:0,hsscRate:0,warehouse:0,warehouseRate:0,hrbp:0,hrbpRate:0,supplier:0,supplierRate:0},
+    {bu:"LBU",zone:"欧洲区",region:"芬兰区",hours:1,count:1,errTotal:0,errRate:0,hssc:0,hsscRate:0,warehouse:0,warehouseRate:0,hrbp:0,hrbpRate:0,supplier:0,supplierRate:0},
+    {bu:"LBU",zone:"欧洲区",region:"挪威区",hours:0,count:0,errTotal:0,errRate:0,hssc:0,hsscRate:0,warehouse:0,warehouseRate:0,hrbp:0,hrbpRate:0,supplier:0,supplierRate:0},
+    {bu:"LBU",zone:"欧洲区",region:"爱尔兰区",hours:4,count:1,errTotal:0,errRate:0,hssc:0,hsscRate:0,warehouse:0,warehouseRate:0,hrbp:0,hrbpRate:0,supplier:0,supplierRate:0},
+    {bu:"LBU",zone:"亚太区",region:"香港",hours:1,count:3,errTotal:0,errRate:0,hssc:0,hsscRate:0,warehouse:0,warehouseRate:0,hrbp:0,hrbpRate:0,supplier:0,supplierRate:0},
+    {bu:"LBU",zone:"亚太区",region:"越南",hours:0.3,count:1,errTotal:0,errRate:0,hssc:0,hsscRate:0,warehouse:0,warehouseRate:0,hrbp:0,hrbpRate:0,supplier:0,supplierRate:0},
+    {bu:"LBU",zone:"亚太区",region:"泰国",hours:0.333,count:1,errTotal:0,errRate:0,hssc:0,hsscRate:0,warehouse:0,warehouseRate:0,hrbp:0,hrbpRate:0,supplier:0,supplierRate:0},
+    {bu:"LBU",zone:"亚太区",region:"韩国",hours:0.333,count:1,errTotal:0,errRate:0,hssc:0,hsscRate:0,warehouse:0,warehouseRate:0,hrbp:0,hrbpRate:0,supplier:0,supplierRate:0},
+    {bu:"WX",zone:"欧洲区",region:"英国区",hours:10,count:4,errTotal:0,errRate:0,hssc:0,hsscRate:0,warehouse:0,warehouseRate:0,hrbp:0,hrbpRate:0,supplier:0,supplierRate:0},
+    {bu:"WX",zone:"欧洲区",region:"法国区",hours:4,count:1,errTotal:0,errRate:0,hssc:0,hsscRate:0,warehouse:0,warehouseRate:0,hrbp:0,hrbpRate:0,supplier:0,supplierRate:0},
+    {bu:"WX",zone:"欧洲区",region:"西班牙区",hours:4,count:2,errTotal:0,errRate:0,hssc:0,hsscRate:0,warehouse:0,warehouseRate:0,hrbp:0,hrbpRate:0,supplier:0,supplierRate:0},
+    {bu:"WX",zone:"欧洲区",region:"比利时区",hours:10,count:4,errTotal:0,errRate:0,hssc:0,hsscRate:0,warehouse:0,warehouseRate:0,hrbp:0,hrbpRate:0,supplier:0,supplierRate:0},
+    {bu:"WX",zone:"欧洲区",region:"丹麦区",hours:4,count:6,errTotal:0,errRate:0,hssc:0,hsscRate:0,warehouse:0,warehouseRate:0,hrbp:0,hrbpRate:0,supplier:0,supplierRate:0},
+    {bu:"WX",zone:"欧洲区",region:"匈牙利",hours:15,count:1,errTotal:0,errRate:0,hssc:0,hsscRate:0,warehouse:0,warehouseRate:0,hrbp:0,hrbpRate:0,supplier:0,supplierRate:0},
+    {bu:"WX",zone:"欧洲区",region:"意大利",hours:20,count:3,errTotal:0,errRate:0,hssc:0,hsscRate:0,warehouse:0,warehouseRate:0,hrbp:0,hrbpRate:0,supplier:0,supplierRate:0},
+    {bu:"WX",zone:"欧洲区",region:"荷兰",hours:20,count:4,errTotal:0,errRate:0,hssc:0,hsscRate:0,warehouse:0,warehouseRate:0,hrbp:0,hrbpRate:0,supplier:0,supplierRate:0},
+    {bu:"GUS",zone:"美国",region:"WE 美西大区",hours:100,count:69,errTotal:7,errRate:0.1014,hssc:0,hsscRate:0,warehouse:4,warehouseRate:0.058,hrbp:0,hrbpRate:0,supplier:3,supplierRate:0.0435},
+    {bu:"GUS",zone:"美国",region:"NE 东北区",hours:55,count:97,errTotal:2,errRate:0.0206,hssc:0,hsscRate:0,warehouse:1,warehouseRate:0.0103,hrbp:0,hrbpRate:0,supplier:1,supplierRate:0.0103},
+    {bu:"GUS",zone:"美国",region:"GL 大湖区",hours:18,count:16,errTotal:1,errRate:0.0625,hssc:0,hsscRate:0,warehouse:0,warehouseRate:0,hrbp:0,hrbpRate:0,supplier:1,supplierRate:0.0625},
+    {bu:"GUS",zone:"美国",region:"FL 佛州区",hours:45,count:34,errTotal:1,errRate:0.0294,hssc:0,hsscRate:0,warehouse:1,warehouseRate:0.0294,hrbp:0,hrbpRate:0,supplier:0,supplierRate:0},
+    {bu:"GUS",zone:"美国",region:"MS 中南大区",hours:29,count:35,errTotal:3,errRate:0.0857,hssc:0,hsscRate:0,warehouse:0,warehouseRate:0,hrbp:0,hrbpRate:0,supplier:3,supplierRate:0.0857},
+    {bu:"GUS",zone:"美国",region:"TX 德州大区",hours:41,count:47,errTotal:2,errRate:0.0426,hssc:0,hsscRate:0,warehouse:0,warehouseRate:0,hrbp:0,hrbpRate:0,supplier:2,supplierRate:0.0426},
+    {bu:"GUS",zone:"美国",region:"Ground项目部",hours:65,count:37,errTotal:1,errRate:0.027,hssc:0,hsscRate:0,warehouse:0,warehouseRate:0,hrbp:0,hrbpRate:0,supplier:1,supplierRate:0.027},
+    {bu:"GUS",zone:"美国",region:"客服组",hours:30,count:5,errTotal:0,errRate:0,hssc:0,hsscRate:0,warehouse:0,warehouseRate:0,hrbp:0,hrbpRate:0,supplier:0,supplierRate:0},
+    {bu:"GEU",zone:"欧洲",region:"法国区",hours:140,count:26,errTotal:10,errRate:0.3846,hssc:0,hsscRate:0,warehouse:0,warehouseRate:0,hrbp:0,hrbpRate:0,supplier:10,supplierRate:0.3846},
+    {bu:"GEU",zone:"欧洲",region:"荷兰区",hours:55,count:22,errTotal:2,errRate:0.0909,hssc:0,hsscRate:0,warehouse:0,warehouseRate:0,hrbp:0,hrbpRate:0,supplier:2,supplierRate:0.0909},
+    {bu:"GEU",zone:"欧洲",region:"意大利区",hours:35,count:7,errTotal:0,errRate:0,hssc:0,hsscRate:0,warehouse:0,warehouseRate:0,hrbp:0,hrbpRate:0,supplier:0,supplierRate:0}
+  ]
+};
+
+// ========== AGGREGATE ==========
+const buSummary = {};
+DATA.regions.forEach(r => {
+  if (!buSummary[r.bu]) buSummary[r.bu] = {bu:r.bu,hours:0,count:0,errTotal:0,hssc:0,warehouse:0,hrbp:0,supplier:0,regionCount:0,errRegionCount:0};
+  const s = buSummary[r.bu];
+  s.hours+=r.hours; s.count+=r.count; s.errTotal+=r.errTotal;
+  s.hssc+=r.hssc; s.warehouse+=r.warehouse; s.hrbp+=r.hrbp; s.supplier+=r.supplier;
+  s.regionCount++; if(r.errTotal>0) s.errRegionCount++;
+});
+
+const zoneSummary = {};
+DATA.regions.forEach(r => {
+  const key = r.bu + '|' + r.zone;
+  if (!zoneSummary[key]) zoneSummary[key] = {bu:r.bu,zone:r.zone,hours:0,count:0,errTotal:0,hssc:0,warehouse:0,hrbp:0,supplier:0,regionCount:0};
+  const z = zoneSummary[key];
+  z.hours+=r.hours; z.count+=r.count; z.errTotal+=r.errTotal;
+  z.hssc+=r.hssc; z.warehouse+=r.warehouse; z.hrbp+=r.hrbp; z.supplier+=r.supplier;
+  z.regionCount++;
+});
+
+const buOrder = ['FBU','GUS','GEU','WX','LBU'];
+const buList = buOrder.filter(b => buSummary[b]);
+const totalHours = buList.reduce((s,b) => s+buSummary[b].hours, 0);
+const totalCount = buList.reduce((s,b) => s+buSummary[b].count, 0);
+const totalErr = buList.reduce((s,b) => s+buSummary[b].errTotal, 0);
+const totalErrRate = totalCount > 0 ? totalErr/totalCount : 0;
+
+// ========== CHART DRILL STATE (only bu / zone) ==========
+let chartBarDrill = 'bu', chartRoleDrill = 'bu';
+
+function getZoneKeysForBu(bu) {
+  return Object.keys(zoneSummary).filter(k => zoneSummary[k].bu === bu);
+}
+
+function setDrillLevel(which, level) {
+  const prefixMap = {bar:'drillBarBtn',role:'drillRoleBtn'};
+  const prefix = prefixMap[which];
+  ['0','1'].forEach((i) => {
+    const el = document.getElementById(prefix+i);
+    if (el) el.classList.toggle('active', String(level==='bu'?0:1) === i);
+  });
+  if (which==='bar') chartBarDrill=level;
+  if (which==='role') chartRoleDrill=level;
+  renderOverviewCharts();
+}
+function setBarDrill(l){setDrillLevel('bar',l);}
+function setRoleDrill(l){setDrillLevel('role',l);}
+
+// Helper: build drill data - zone level always includes BU prefix
+function buildDrillData(level, field) {
+  if (level === 'bu') {
+    return {labels: buList.slice(), data: buList.map(b => buSummary[b][field]), buIndices: buList.map(b => buOrder.indexOf(b))};
+  }
+  const labels=[], data=[], buIndices=[];
+  buList.forEach(bu => {
+    getZoneKeysForBu(bu).forEach(k => {
+      const z = zoneSummary[k];
+      labels.push(bu + ' ' + z.zone);
+      data.push(z[field]);
+      buIndices.push(buOrder.indexOf(bu));
+    });
+  });
+  return {labels, data, buIndices};
+}
+
+function buildDrillMultiData(level, fields) {
+  if (level === 'bu') {
+    return {labels: buList.slice(), dataArr: fields.map(f => buList.map(b => buSummary[b][f])), buIndices: buList.map(b => buOrder.indexOf(b))};
+  }
+  const labels=[], dataArr=fields.map(()=>[]), buIndices=[];
+  buList.forEach(bu => {
+    getZoneKeysForBu(bu).forEach(k => {
+      const z = zoneSummary[k];
+      labels.push(bu + ' ' + z.zone);
+      fields.forEach((f,fi) => dataArr[fi].push(z[f]));
+      buIndices.push(buOrder.indexOf(bu));
+    });
+  });
+  return {labels, dataArr, buIndices};
+}
+
+const buColors = ['#3B82F6','#EF4444','#F59E0B','#10B981','#8B5CF6'];
+function getAxisLabelSize(level) { return level==='bu' ? 11 : 9; }
+function getAxisLabelRotate(level) { return level==='bu' ? 0 : 30; }
+
+// ========== KPI ==========
+function renderKPI() {
+  const cards = [
+    {label:'总工时（4月）',value:totalHours.toFixed(2),unit:'小时',cls:'',red:false},
+    {label:'总报账次数',value:totalCount,unit:'次',cls:'',red:false},
+    {label:'总差错次数',value:totalErr,unit:'次',cls:totalErr>50?'warn':'',red:true},
+    {label:'整体差错率',value:(totalErrRate*100).toFixed(2),unit:'%',cls:totalErrRate>0.05?'danger':totalErrRate>0.02?'warn':'',red:true},
+    {label:'涉及BU数',value:buList.filter(b=>buSummary[b].errTotal>0).length,unit:'个',cls:'',red:false},
+    {label:'问题区域数',value:DATA.regions.filter(r=>r.errTotal>0).length,unit:'个',cls:'',red:false}
+  ];
+  document.getElementById('kpiRow').innerHTML = cards.map(c =>
+    `<div class="kpi-card ${c.cls}"><div class="label">${c.label}</div><div><span class="value"${c.red?' style="color:#DC2626"':''}>${c.value}</span><span class="unit">${c.unit}</span></div></div>`
+  ).join('');
+}
+
+// ========== SUMMARY ==========
+function renderSummary() {
+  const tw = buList.reduce((s,b)=>s+buSummary[b].warehouse,0);
+  const ts = buList.reduce((s,b)=>s+buSummary[b].supplier,0);
+  const sp = totalErr>0?(ts/totalErr*100).toFixed(1):'0';
+  const wp = totalErr>0?(tw/totalErr*100).toFixed(1):'0';
+  const cr = DATA.regions.filter(r=>r.errTotal===0&&r.count>0).length;
+  const items = [
+    {bullet:'red', text:`4月报账 <strong>${totalCount}次</strong>，差错 <strong>${totalErr}次</strong>，整体差错率 <strong>${(totalErrRate*100).toFixed(2)}%</strong>。差错集中在供应商端（${ts}次，${sp}%）和仓库端（${tw}次，${wp}%）。`},
+    {bullet:'orange', text:`<b>GEU差错率最高 21.82%</b>，法国区供应商差错10次（差错率${(10/26*100).toFixed(2)}%），需重点介入供应商管理。`},
+    {bullet:'orange', text:`<b>FBU英国区</b>差错20次（差错率17.09%），供应商差错16次+仓库4次，建议开展专项质量审查。`},
+    {bullet:'blue', text:`<b>加拿大区</b>差错率16.67%，<b>GUS美西大区</b>差错率10.14%，需关注报账规范性。`},
+    {bullet:'green', text:`<b>零差错</b>：LBU（11区域）、WX（8区域）、FBU亚太区（3区域）均零差错，共覆盖 <em>${cr}个区域</em>，建议推广经验。`}
+  ];
+  document.getElementById('summaryContent').innerHTML = items.map(i =>
+    `<div class="summary-item"><span class="bullet ${i.bullet}"></span><span>${i.text}</span></div>`
+  ).join('');
+}
+
+// ========== OVERVIEW CHARTS ==========
+function renderOverviewCharts() {
+  const level1=chartBarDrill, level3=chartRoleDrill;
+
+  // ---- Chart 1: 差错情况概览 ----
+  const c1 = echarts.init(document.getElementById('chart-bu-bar'));
+  const errD = buildDrillData(level1, 'errTotal');
+  const cntD = buildDrillData(level1, 'count');
+  const rateD = errD.data.map((e,i) => cntD.data[i] > 0 ? (e/cntD.data[i]*100).toFixed(2) : '0.00');
+  c1.setOption({
+    tooltip:{trigger:'axis',axisPointer:{type:'shadow'}},
+    legend:{data:['差错次数','报账次数','差错率'],bottom:0,textStyle:{fontSize:10}},
+    grid:{left:'2%',right:'8%',bottom:level1==='bu'?'14%':'16%',top:'4%',containLabel:true},
+    xAxis:{type:'category',data:errD.labels,axisLabel:{fontSize:getAxisLabelSize(level1),rotate:getAxisLabelRotate(level1)}},
+    yAxis:[
+      {type:'value',name:'次数',nameTextStyle:{fontSize:10},axisLabel:{fontSize:9}},
+      {type:'value',name:'差错率(%)',nameTextStyle:{fontSize:10},axisLabel:{fontSize:9,formatter:'{value}%'}}
+    ],
+    series:[
+      {name:'差错次数',type:'bar',data:errD.data,itemStyle:{color:p=>level1==='bu'?'#3B82F6':buColors[errD.buIndices[p.dataIndex]]},label:{show:true,position:'top',fontSize:level1==='bu'?10:8,fontWeight:'bold'}},
+      {name:'报账次数',type:'bar',data:cntD.data,yAxisIndex:0,itemStyle:{color:'#E2E8F0'},label:{show:true,position:'top',fontSize:level1==='bu'?9:7,color:'#94A3B8'}},
+      {name:'差错率',type:'line',yAxisIndex:1,data:rateD,lineStyle:{color:'#EF4444',width:2},itemStyle:{color:'#EF4444'},symbol:'circle',symbolSize:level1==='bu'?8:5,
+        label:{show:true,fontSize:level1==='bu'?10:8,fontWeight:'bold',color:'#EF4444',formatter:'{c}%'}}
+    ]
+  },true);
+
+  // ---- Chart 3: 差错角色分布 ----
+  const c3 = echarts.init(document.getElementById('chart-bu-role-stack'));
+  const roleD = buildDrillMultiData(level3, ['warehouse','supplier','hssc','hrbp']);
+  const legendNames = ['仓库','供应商','HSSC','HRBP'];
+  const roleColors = ['#3B82F6','#EF4444','#10B981','#F59E0B'];
+  c3.setOption({
+    tooltip:{trigger:'axis',axisPointer:{type:'shadow'}},
+    legend:{data:legendNames,bottom:0,textStyle:{fontSize:10}},
+    grid:{left:'2%',right:'3%',bottom:level3==='bu'?'14%':'16%',top:'4%',containLabel:true},
+    xAxis:{type:'category',data:roleD.labels,axisLabel:{fontSize:getAxisLabelSize(level3),rotate:getAxisLabelRotate(level3)}},
+    yAxis:{type:'value',name:'差错次数',axisLabel:{fontSize:9}},
+    series:legendNames.map((name,i)=>({
+      name, type:'bar', stack:'total', data:roleD.dataArr[i],
+      itemStyle:{color:roleColors[i]},
+      label:{show:level3==='bu',fontSize:10,color:'#fff',formatter:p=>p.value>0?p.value:''}
+    }))
+  },true);
+
+  // ---- Role Pie ----
+  const c4 = echarts.init(document.getElementById('chart-role-pie'));
+  const tw2=buList.reduce((s,b)=>s+buSummary[b].warehouse,0),ts2=buList.reduce((s,b)=>s+buSummary[b].supplier,0);
+  const th=buList.reduce((s,b)=>s+buSummary[b].hssc,0),thb=buList.reduce((s,b)=>s+buSummary[b].hrbp,0);
+  c4.setOption({
+    tooltip:{trigger:'item',formatter:'{b}: {c}次 ({d}%)'},
+    legend:{bottom:0,textStyle:{fontSize:10}},
+    series:[{type:'pie',radius:['40%','68%'],center:['50%','42%'],
+      data:[{value:tw2,name:'仓库差错',itemStyle:{color:'#3B82F6'}},{value:ts2,name:'供应商差错',itemStyle:{color:'#EF4444'}},{value:th,name:'HSSC差错',itemStyle:{color:'#10B981'}},{value:thb,name:'HRBP差错',itemStyle:{color:'#F59E0B'}}].filter(d=>d.value>0),
+      label:{formatter:'{b}\n{c}次 ({d}%)',fontSize:10},
+      emphasis:{label:{fontSize:14,fontWeight:'bold'}}
+    }]
+  },true);
+
+  // ---- 问题区域TOP10（按差错率排序） ----
+  const c5 = echarts.init(document.getElementById('chart-top10-region'));
+  const errRegions = DATA.regions.filter(r => r.errTotal > 0)
+    .map(r => ({name: r.bu + ' ' + r.region, errRate: r.errRate, errTotal: r.errTotal, count: r.count}))
+    .sort((a, b) => b.errRate - a.errRate)
+    .slice(0, 10)
+    .reverse();
+  c5.setOption({
+    tooltip:{trigger:'axis',axisPointer:{type:'shadow'},formatter:p=>{
+      const d=p[0]; const src=errRegions[errRegions.length-1-d.dataIndex];
+      return `${src.name}<br/>差错率: ${(src.errRate*100).toFixed(2)}%<br/>差错次数: ${src.errTotal}次<br/>报账次数: ${src.count}次`;
+    }},
+    grid:{left:'22%',right:'12%',bottom:'4%',top:'4%',containLabel:false},
+    xAxis:{type:'value',name:'差错率(%)',nameTextStyle:{fontSize:10},axisLabel:{fontSize:9,formatter:'{value}%'},splitLine:{lineStyle:{type:'dashed',color:'#E2E8F0'}}},
+    yAxis:{type:'category',data:errRegions.map(r=>r.name),axisLabel:{fontSize:10,color:'#334155'}},
+    series:[{
+      type:'bar',
+      data:errRegions.map(r=>+(r.errRate*100).toFixed(2)),
+      barWidth:'55%',
+      itemStyle:{borderRadius:[0,4,4,0],color:p=>{
+        const v=p.value; if(v>15) return '#DC2626'; if(v>5) return '#F59E0B'; return '#3B82F6';
+      }},
+      label:{show:true,position:'right',fontSize:10,fontWeight:'bold',formatter:'{c}%'}
+    }]
+  },true);
+}
+
+// ========== DETAIL TABLE (2-level expand + column sort) ==========
+let tableExpandLevel = 'bu'; // 'bu' -> 'zone' -> 'region'
+let tableSortCol = null;
+let tableSortDir = 'asc'; // 'asc' | 'desc'
+
+function expandTableLevel(level) {
+  if (level === 'bu') {
+    tableExpandLevel = 'bu';
+  } else if (level === 'zone') {
+    tableExpandLevel = tableExpandLevel === 'zone' ? 'bu' : 'zone';
+  } else if (level === 'region') {
+    tableExpandLevel = tableExpandLevel === 'region' ? 'bu' : 'region';
+  }
+  renderDetailTable();
+}
+
+function toggleBuExpand(bu) {
+  if (tableExpandLevel === 'bu') tableExpandLevel = 'zone';
+  else if (tableExpandLevel === 'zone') tableExpandLevel = 'bu';
+  else tableExpandLevel = 'zone';
+  renderDetailTable();
+}
+
+function rateClass(v) {
+  const n = parseFloat(v);
+  if (n > 10) return 'rate-high';
+  if (n > 5) return 'rate-mid';
+  if (n > 0) return 'rate-low';
+  return 'rate-zero';
+}
+
+function sortIcon(col) {
+  if (tableSortCol !== col) return '<span class="sort-icon">⇅</span>';
+  return tableSortDir === 'asc' ? '<span class="sort-icon active">↑</span>' : '<span class="sort-icon active">↓</span>';
+}
+
+function sortTable(col) {
+  if (tableSortCol === col) {
+    tableSortDir = tableSortDir === 'asc' ? 'desc' : 'asc';
+  } else {
+    tableSortCol = col;
+    tableSortDir = col === 'name' ? 'asc' : 'desc';
+  }
+  renderDetailTable();
+}
+
+function renderDetailTable() {
+  const cols = [
+    {key:'name',label:'BU / 大区 / 区域',type:'string'},
+    {key:'hours',label:'工时(h)',type:'num'},
+    {key:'count',label:'报账次数',type:'num'},
+    {key:'errTotal',label:'总差错',type:'num'},
+    {key:'errRate',label:'差错率',type:'num'},
+    {key:'warehouse',label:'仓库',type:'num'},
+    {key:'supplier',label:'供应商',type:'num'},
+    {key:'hssc',label:'HSSC',type:'num'},
+    {key:'hrbp',label:'HRBP',type:'num'},
+    {key:'errRegion',label:'问题区域',type:'num'}
+  ];
+
+  let html = `<table><thead><tr>`;
+  cols.forEach(c => {
+    const align = c.key === 'name' ? '' : ' class="text-right"';
+    const sortCls = tableSortCol === c.key ? ' style="color:#2563EB"' : '';
+    html += `<th${align} onclick="sortTable('${c.key}')"${sortCls}>${c.label}${sortIcon(c.key)}</th>`;
+  });
+  html += '</tr></thead><tbody>';
+
+  // Build flat row list
+  let rows = [];
+  buList.forEach(bu => {
+    const s = buSummary[bu];
+    const rate = s.count>0?(s.errTotal/s.count*100):0;
+    rows.push({level:'bu',bu,name:bu,hours:s.hours,count:s.count,errTotal:s.errTotal,errRate:rate,warehouse:s.warehouse,supplier:s.supplier,hssc:s.hssc,hrbp:s.hrbp,errRegion:s.errRegionCount});
+
+    if (tableExpandLevel === 'zone' || tableExpandLevel === 'region') {
+      const zones = getZoneKeysForBu(bu);
+      zones.forEach(k => {
+        const z = zoneSummary[k];
+        const zRate = z.count>0?(z.errTotal/z.count*100):0;
+        const zName = bu + ' ' + z.zone;
+        rows.push({level:'zone',bu,name:zName,hours:z.hours,count:z.count,errTotal:z.errTotal,errRate:zRate,warehouse:z.warehouse,supplier:z.supplier,hssc:z.hssc,hrbp:z.hrbp,
+          errRegion:DATA.regions.filter(r=>r.bu===bu&&r.zone===z.zone&&r.errTotal>0).length});
+
+        if (tableExpandLevel === 'region') {
+          const regionList = DATA.regions.filter(r => r.bu===bu && r.zone===z.zone);
+          regionList.forEach(r => {
+            rows.push({level:'region',bu,name:r.region,hours:r.hours,count:r.count,errTotal:r.errTotal,errRate:r.errRate*100,warehouse:r.warehouse,supplier:r.supplier,hssc:r.hssc,hrbp:r.hrbp,errRegion:null});
+          });
+        }
+      });
+    }
+  });
+
+  // Sort BU-level rows, sub-rows follow parent
+  if (tableSortCol) {
+    const col = cols.find(c=>c.key===tableSortCol);
+    if (col) {
+      // Group rows by BU
+      const buGroups = {};
+      rows.forEach(r => {
+        const buKey = r.level === 'bu' ? r.bu : r.bu;
+        if (!buGroups[buKey]) buGroups[buKey] = [];
+        buGroups[buKey].push(r);
+      });
+      const buKeys = Object.keys(buGroups);
+      buKeys.sort((a,b) => {
+        const ra = buGroups[a][0], rb = buGroups[b][0];
+        let va = ra[tableSortCol], vb = rb[tableSortCol];
+        if (col.type === 'num') { va = parseFloat(va)||0; vb = parseFloat(vb)||0; }
+        if (va < vb) return tableSortDir === 'asc' ? -1 : 1;
+        if (va > vb) return tableSortDir === 'asc' ? 1 : -1;
+        return buOrder.indexOf(a) - buOrder.indexOf(b);
+      });
+      rows = [];
+      buKeys.forEach(k => rows.push(...buGroups[k]));
+    }
+  }
+
+  // Render rows
+  rows.forEach(r => {
+    const rateStr = (r.errRate*100 >= 1 ? r.errRate : r.errRate).toFixed ? (typeof r.errRate === 'number' ? r.errRate.toFixed(2) : r.errRate) : r.errRate;
+    const displayRate = (typeof r.errRate === 'number') ? r.errRate.toFixed(2) : r.errRate;
+    if (r.level === 'bu') {
+      const indent = '';
+      const hl = '';
+      const nameStyle = `<span class="badge badge-blue">${r.name}</span>`;
+      html += `<tr class="${hl}" style="cursor:pointer" onclick="toggleBuExpand('${r.bu}')">
+        <td>${nameStyle}</td>
+        <td class="text-right">${r.hours.toFixed(1)}</td>
+        <td class="text-right">${r.count}</td>
+        <td class="text-right">${r.errTotal}</td>
+        <td class="text-right"><span class="${rateClass(displayRate)}">${displayRate}%</span></td>
+        <td class="text-right">${r.warehouse}</td>
+        <td class="text-right">${r.supplier}</td>
+        <td class="text-right">${r.hssc}</td>
+        <td class="text-right">${r.hrbp}</td>
+        <td class="text-right">${r.errRegion}</td>
+      </tr>`;
+    } else if (r.level === 'zone') {
+      const nameStyle = `<span style="padding-left:16px;color:#475569;font-weight:500">├ ${r.name}</span>`;
+      html += `<tr class="sub-zone-row" style="cursor:pointer" onclick="toggleBuExpand('${r.bu}')">
+        <td>${nameStyle}</td>
+        <td class="text-right">${r.hours.toFixed(1)}</td>
+        <td class="text-right">${r.count}</td>
+        <td class="text-right">${r.errTotal}</td>
+        <td class="text-right"><span class="${rateClass(r.errRate.toFixed(2))}">${r.errRate.toFixed(2)}%</span></td>
+        <td class="text-right">${r.warehouse}</td>
+        <td class="text-right">${r.supplier}</td>
+        <td class="text-right">${r.hssc}</td>
+        <td class="text-right">${r.hrbp}</td>
+        <td class="text-right">${r.errRegion}</td>
+      </tr>`;
+    } else {
+      const hl = r.errRate > 10 ? 'highlight' : '';
+      const nameStyle = `<span class="sub-region-row" style="color:#64748B;padding-left:32px;display:block">${r.name}</span>`;
+      html += `<tr class="${hl}">
+        <td>${nameStyle}</td>
+        <td class="text-right">${r.hours}</td>
+        <td class="text-right">${r.count}</td>
+        <td class="text-right">${r.errTotal}</td>
+        <td class="text-right"><span class="${rateClass(r.errRate.toFixed(2))}">${r.errRate.toFixed(2)}%</span></td>
+        <td class="text-right">${r.warehouse}</td>
+        <td class="text-right">${r.supplier}</td>
+        <td class="text-right">${r.hssc}</td>
+        <td class="text-right">${r.hrbp}</td>
+        <td class="text-right">-</td>
+      </tr>`;
+    }
+  });
+
+  // Total row
+  html += `<tr style="border-top:2px solid #DBEAFE;background:#EFF6FF;font-weight:600">
+    <td><b>合计</b></td>
+    <td class="text-right">${totalHours.toFixed(1)}</td><td class="text-right">${totalCount}</td>
+    <td class="text-right">${totalErr}</td><td class="text-right">${(totalErrRate*100).toFixed(2)}%</td>
+    <td class="text-right">${buList.reduce((s,b)=>s+buSummary[b].warehouse,0)}</td>
+    <td class="text-right">${buList.reduce((s,b)=>s+buSummary[b].supplier,0)}</td>
+    <td class="text-right">${buList.reduce((s,b)=>s+buSummary[b].hssc,0)}</td>
+    <td class="text-right">${buList.reduce((s,b)=>s+buSummary[b].hrbp,0)}</td>
+    <td class="text-right">${DATA.regions.filter(r=>r.errTotal>0).length}</td>
+  </tr>`;
+  html += '</tbody></table>';
+  document.getElementById('detailTable').innerHTML = html;
+}
+
+// ========== DOWNLOAD / EXPORT ==========
+function downloadHTML() {
+  const blob = new Blob(['<!DOCTYPE html>\n'+document.documentElement.outerHTML],{type:'text/html;charset=utf-8'});
+  const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='海外劳务工报账运营质量看板.html';
+  document.body.appendChild(a); a.click(); document.body.removeChild(a);
+}
+
+async function exportPNG() {
+  const btn=document.getElementById('btnExport'); btn.disabled=true; btn.textContent='导出中...';
+  try {
+    ['overview','detail'].forEach(k=>{const el=document.getElementById('tab-'+k);if(el)el.style.display='block';});
+    await new Promise(r=>setTimeout(r,500));
+    document.querySelectorAll('.chart-wrap').forEach(el=>{const i=echarts.getInstanceByDom(el);if(i)i.resize();});
+    await new Promise(r=>setTimeout(r,300));
+    const canvas = await html2canvas(document.body,{backgroundColor:'#F0F4F8',scale:2,useCORS:true,allowTaint:true,logging:false});
+    ['overview','detail'].forEach(k=>{const el=document.getElementById('tab-'+k);if(el)el.style.display='';});
+    document.getElementById('tab-overview').style.display='block';
+    const a=document.createElement('a'); a.download='海外劳务工报账运营质量看板.png'; a.href=canvas.toDataURL('image/png'); a.click();
+  } catch(e){alert('导出失败');}
+  finally{btn.disabled=false;btn.textContent='导出 PNG';}
+}
+
+// ========== TAB ==========
+function switchTab(tab, btnEl) {
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  document.querySelectorAll('.tab-content').forEach(c=>c.classList.remove('active'));
+  btnEl.classList.add('active');
+  document.getElementById('tab-'+tab).classList.add('active');
+  setTimeout(()=>{
+    if(tab==='overview') renderOverviewCharts();
+    if(tab==='detail') renderDetailTable();
+  },100);
+}
+
+// ========== INIT ==========
+renderKPI();
+renderSummary();
+renderOverviewCharts();
+renderDetailTable();
+
+window.addEventListener('resize',()=>{
+  document.querySelectorAll('.chart-wrap').forEach(el=>{const i=echarts.getInstanceByDom(el);if(i)i.resize();});
+});
+</script>
+
+</body></html>
