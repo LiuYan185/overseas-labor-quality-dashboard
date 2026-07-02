@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="zh-CN"><head>
+<html lang="zh-CN">
+<head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>海外劳务工报账运营质量看板</title>
@@ -97,10 +98,14 @@ tr:hover td{background:#F8FAFC}
 
 @media(max-width:1200px){.kpi-row{grid-template-columns:repeat(3,1fr)}.grid-2{grid-template-columns:1fr}}
 </style>
+<meta property="og:title" content="海外劳务工报账运营质量看板">
+<meta property="og:description" content="海外劳务工报账运营质量看板">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://liuyan185.github.io/overseas-labor-quality-dashboard/">
 </head>
 <body>
 <div class="header">
-  <div class="header-left"><h1>海外劳务工报账运营质量看板</h1><div class="header-sub">数据周期：2026年4月</div></div>
+  <div class="header-left"><h1>海外劳务工报账运营质量看板</h1><div class="header-sub">数据周期：2026年5月</div></div>
   <div class="header-actions">
     <button class="btn-download" onclick="downloadHTML()">下载 HTML</button>
     <button class="btn-export" id="btnExport" onclick="exportPNG()">导出 PNG</button>
@@ -110,9 +115,9 @@ tr:hover td{background:#F8FAFC}
 <div class="container">
   <div class="summary-panel" id="summaryPanel">
     <h3>经营总结</h3>
-    <div id="summaryContent"><div class="summary-item"><span class="bullet red"></span><span>4月报账 <strong>1876次</strong>，差错 <strong>65次</strong>，整体差错率 <strong>3.46%</strong>。差错集中在供应商端（46次，70.8%）和仓库端（19次，29.2%）。</span></div><div class="summary-item"><span class="bullet orange"></span><span><b>GEU差错率最高 21.82%</b>，法国区供应商差错10次（差错率38.46%），需重点介入供应商管理。</span></div><div class="summary-item"><span class="bullet orange"></span><span><b>FBU英国区</b>差错20次（差错率17.09%），供应商差错16次+仓库4次，建议开展专项质量审查。</span></div><div class="summary-item"><span class="bullet blue"></span><span><b>加拿大区</b>差错率16.67%，<b>GUS美西大区</b>差错率10.14%，需关注报账规范性。</span></div><div class="summary-item"><span class="bullet green"></span><span><b>零差错</b>：LBU（11区域）、PBU（8区域）、FBU亚太区（3区域）均零差错，共覆盖 <em>34个区域</em>，建议推广经验。</span></div></div>
+    <div id="summaryContent"></div>
   </div>
-  <div class="kpi-row" id="kpiRow"><div class="kpi-card "><div class="label">总工时</div><div><span class="value">1533.02</span><span class="unit">小时</span></div></div><div class="kpi-card "><div class="label">总报账次数</div><div><span class="value">1876</span><span class="unit">次</span></div></div><div class="kpi-card warn"><div class="label">总差错次数</div><div><span class="value" style="color:#DC2626">65</span><span class="unit">次</span></div></div><div class="kpi-card warn"><div class="label">整体差错率</div><div><span class="value" style="color:#DC2626">3.46</span><span class="unit">%</span></div></div><div class="kpi-card "><div class="label">涉及BU数</div><div><span class="value">3</span><span class="unit">个</span></div></div><div class="kpi-card "><div class="label">问题区域数</div><div><span class="value">16</span><span class="unit">个</span></div></div></div>
+  <div class="kpi-row" id="kpiRow"></div>
 
   <div class="tab-hint">点击可切换板块</div>
   <div class="tab-nav">
@@ -131,9 +136,9 @@ tr:hover td{background:#F8FAFC}
             <button class="chart-drill-btn" id="drillBarBtn1" onclick="setBarDrill('zone')">按大区</button>
           </div>
         </div>
-        <div class="chart-wrap compact" id="chart-bu-bar" _echarts_instance_="ec_1779884925067" style="user-select: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0); position: relative;"><div style="position: relative; width: 537px; height: 280px; padding: 0px; margin: 0px; border-width: 0px;"><canvas data-zr-dom-id="zr_0" width="671" height="350" style="position: absolute; left: 0px; top: 0px; width: 537px; height: 280px; user-select: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0); padding: 0px; margin: 0px; border-width: 0px;"></canvas></div><div class=""></div></div>
+        <div class="chart-wrap compact" id="chart-bu-bar"></div>
       </div>
-      <div class="panel"><div class="panel-header"><h3>问题区域TOP10（差错率排序）</h3></div><div class="chart-wrap compact" id="chart-top10-region" _echarts_instance_="ec_1779884925070" style="user-select: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0); position: relative;"><div style="position: relative; width: 536px; height: 280px; padding: 0px; margin: 0px; border-width: 0px;"><canvas data-zr-dom-id="zr_0" width="670" height="350" style="position: absolute; left: 0px; top: 0px; width: 536px; height: 280px; user-select: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0); padding: 0px; margin: 0px; border-width: 0px;"></canvas></div><div class=""></div></div></div>
+      <div class="panel"><div class="panel-header"><h3>问题区域TOP10（差错率排序）</h3></div><div class="chart-wrap compact" id="chart-top10-region"></div></div>
     </div>
     <div class="grid-2">
       <div class="panel">
@@ -144,9 +149,9 @@ tr:hover td{background:#F8FAFC}
             <button class="chart-drill-btn" id="drillRoleBtn1" onclick="setRoleDrill('zone')">按大区</button>
           </div>
         </div>
-        <div class="chart-wrap" id="chart-bu-role-stack" _echarts_instance_="ec_1779884925068" style="user-select: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0); position: relative;"><div style="position: relative; width: 537px; height: 340px; padding: 0px; margin: 0px; border-width: 0px;"><canvas data-zr-dom-id="zr_0" width="671" height="425" style="position: absolute; left: 0px; top: 0px; width: 537px; height: 340px; user-select: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0); padding: 0px; margin: 0px; border-width: 0px;"></canvas></div><div class=""></div></div>
+        <div class="chart-wrap" id="chart-bu-role-stack"></div>
       </div>
-      <div class="panel"><div class="panel-header"><h3>差错角色贡献占比</h3></div><div class="chart-wrap" id="chart-role-pie" _echarts_instance_="ec_1779884925069" style="user-select: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0); position: relative;"><div style="position: relative; width: 536px; height: 340px; padding: 0px; margin: 0px; border-width: 0px;"><canvas data-zr-dom-id="zr_0" width="670" height="425" style="position: absolute; left: 0px; top: 0px; width: 536px; height: 340px; user-select: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0); padding: 0px; margin: 0px; border-width: 0px;"></canvas></div><div class=""></div></div></div>
+      <div class="panel"><div class="panel-header"><h3>差错角色贡献占比</h3></div><div class="chart-wrap" id="chart-role-pie"></div></div>
     </div>
   </div>
 
@@ -161,131 +166,68 @@ tr:hover td{background:#F8FAFC}
           <button class="chart-drill-btn" onclick="expandTableLevel('bu')">全部收缩</button>
         </div>
       </div>
-      <div style="max-height:520px;overflow:auto" id="detailTable"><table><thead><tr><th onclick="sortTable('name')">BU / 大区 / 区域<span class="sort-icon">⇅</span></th><th class="text-right" onclick="sortTable('hours')">工时(h)<span class="sort-icon">⇅</span></th><th class="text-right" onclick="sortTable('count')">报账次数<span class="sort-icon">⇅</span></th><th class="text-right" onclick="sortTable('errTotal')">总差错<span class="sort-icon">⇅</span></th><th class="text-right" onclick="sortTable('errRate')">差错率<span class="sort-icon">⇅</span></th><th class="text-right" onclick="sortTable('warehouse')">仓库<span class="sort-icon">⇅</span></th><th class="text-right" onclick="sortTable('supplier')">供应商<span class="sort-icon">⇅</span></th><th class="text-right" onclick="sortTable('hssc')">HSSC<span class="sort-icon">⇅</span></th><th class="text-right" onclick="sortTable('hrbp')">HRBP<span class="sort-icon">⇅</span></th><th class="text-right" onclick="sortTable('errRegion')">问题区域<span class="sort-icon">⇅</span></th></tr></thead><tbody><tr class="" style="cursor:pointer" onclick="toggleBuExpand('FBU')">
-        <td><span class="badge badge-blue">FBU</span></td>
-        <td class="text-right">805.0</td>
-        <td class="text-right">1433</td>
-        <td class="text-right">36</td>
-        <td class="text-right"><span class="rate-low">2.51%</span></td>
-        <td class="text-right">13</td>
-        <td class="text-right">23</td>
-        <td class="text-right">0</td>
-        <td class="text-right">0</td>
-        <td class="text-right">7</td>
-      </tr><tr class="" style="cursor:pointer" onclick="toggleBuExpand('GUS')">
-        <td><span class="badge badge-blue">GUS</span></td>
-        <td class="text-right">383.0</td>
-        <td class="text-right">340</td>
-        <td class="text-right">17</td>
-        <td class="text-right"><span class="rate-low">5.00%</span></td>
-        <td class="text-right">6</td>
-        <td class="text-right">11</td>
-        <td class="text-right">0</td>
-        <td class="text-right">0</td>
-        <td class="text-right">7</td>
-      </tr><tr class="" style="cursor:pointer" onclick="toggleBuExpand('GEU')">
-        <td><span class="badge badge-blue">GEU</span></td>
-        <td class="text-right">230.0</td>
-        <td class="text-right">55</td>
-        <td class="text-right">12</td>
-        <td class="text-right"><span class="rate-high">21.82%</span></td>
-        <td class="text-right">0</td>
-        <td class="text-right">12</td>
-        <td class="text-right">0</td>
-        <td class="text-right">0</td>
-        <td class="text-right">2</td>
-      </tr><tr class="" style="cursor:pointer" onclick="toggleBuExpand('PBU')">
-        <td><span class="badge badge-blue">PBU</span></td>
-        <td class="text-right">87.0</td>
-        <td class="text-right">25</td>
-        <td class="text-right">0</td>
-        <td class="text-right"><span class="rate-zero">0.00%</span></td>
-        <td class="text-right">0</td>
-        <td class="text-right">0</td>
-        <td class="text-right">0</td>
-        <td class="text-right">0</td>
-        <td class="text-right">0</td>
-      </tr><tr class="" style="cursor:pointer" onclick="toggleBuExpand('LBU')">
-        <td><span class="badge badge-blue">LBU</span></td>
-        <td class="text-right">28.0</td>
-        <td class="text-right">23</td>
-        <td class="text-right">0</td>
-        <td class="text-right"><span class="rate-zero">0.00%</span></td>
-        <td class="text-right">0</td>
-        <td class="text-right">0</td>
-        <td class="text-right">0</td>
-        <td class="text-right">0</td>
-        <td class="text-right">0</td>
-      </tr><tr style="border-top:2px solid #DBEAFE;background:#EFF6FF;font-weight:600">
-    <td><b>合计</b></td>
-    <td class="text-right">1533.0</td><td class="text-right">1876</td>
-    <td class="text-right">65</td><td class="text-right">3.46%</td>
-    <td class="text-right">19</td>
-    <td class="text-right">46</td>
-    <td class="text-right">0</td>
-    <td class="text-right">0</td>
-    <td class="text-right">16</td>
-  </tr></tbody></table></div>
+      <div style="max-height:520px;overflow:auto" id="detailTable"></div>
     </div>
   </div>
 </div>
-<div class="footer">纵腾集团 | 海外劳务工报账运营质量看板 | 2026年4月</div>
+<div class="footer">海外劳务工报账运营质量看板 | 2026年5月</div>
 
 <script>
 const DATA = {
   regions: [
-    {bu:"FBU",zone:"美洲区",region:"加州区",hours:130,count:345,errTotal:5,errRate:0.0145,hssc:0,hsscRate:0,warehouse:5,warehouseRate:0.0145,hrbp:0,hrbpRate:0,supplier:0,supplierRate:0},
-    {bu:"FBU",zone:"美洲区",region:"新泽西区",hours:113.82,count:296,errTotal:0,errRate:0,hssc:0,hsscRate:0,warehouse:0,warehouseRate:0,hrbp:0,hrbpRate:0,supplier:0,supplierRate:0},
-    {bu:"FBU",zone:"美洲区",region:"加拿大区",hours:30,count:36,errTotal:6,errRate:0.1667,hssc:0,hsscRate:0,warehouse:2,warehouseRate:0.0556,hrbp:0,hrbpRate:0,supplier:4,supplierRate:0.1111},
-    {bu:"FBU",zone:"美洲区",region:"芝加哥区",hours:29.5,count:117,errTotal:1,errRate:0.0085,hssc:0,hsscRate:0,warehouse:1,warehouseRate:0.0085,hrbp:0,hrbpRate:0,supplier:0,supplierRate:0},
-    {bu:"FBU",zone:"美洲区",region:"萨凡纳区",hours:20.93,count:106,errTotal:0,errRate:0,hssc:0,hsscRate:0,warehouse:0,warehouseRate:0,hrbp:0,hrbpRate:0,supplier:0,supplierRate:0},
-    {bu:"FBU",zone:"美洲区",region:"亚特兰大区",hours:16.11,count:67,errTotal:2,errRate:0.0299,hssc:0,hsscRate:0,warehouse:0,warehouseRate:0,hrbp:0,hrbpRate:0,supplier:2,supplierRate:0.0299},
-    {bu:"FBU",zone:"美洲区",region:"达拉斯区",hours:6.56,count:22,errTotal:1,errRate:0.0455,hssc:0,hsscRate:0,warehouse:0,warehouseRate:0,hrbp:0,hrbpRate:0,supplier:1,supplierRate:0.0455},
-    {bu:"FBU",zone:"美洲区",region:"西雅图",hours:4,count:5,errTotal:0,errRate:0,hssc:0,hsscRate:0,warehouse:0,warehouseRate:0,hrbp:0,hrbpRate:0,supplier:0,supplierRate:0},
-    {bu:"FBU",zone:"美洲区",region:"诺福克斯",hours:4,count:8,errTotal:0,errRate:0,hssc:0,hsscRate:0,warehouse:0,warehouseRate:0,hrbp:0,hrbpRate:0,supplier:0,supplierRate:0},
-    {bu:"FBU",zone:"美洲区",region:"休斯顿区",hours:2.63,count:21,errTotal:0,errRate:0,hssc:0,hsscRate:0,warehouse:0,warehouseRate:0,hrbp:0,hrbpRate:0,supplier:0,supplierRate:0},
-    {bu:"FBU",zone:"美洲区",region:"墨西哥区",hours:2,count:0,errTotal:0,errRate:0,hssc:0,hsscRate:0,warehouse:0,warehouseRate:0,hrbp:0,hrbpRate:0,supplier:0,supplierRate:0},
-    {bu:"FBU",zone:"美洲区",region:"迈阿密",hours:2,count:9,errTotal:0,errRate:0,hssc:0,hsscRate:0,warehouse:0,warehouseRate:0,hrbp:0,hrbpRate:0,supplier:0,supplierRate:0},
-    {bu:"FBU",zone:"亚太区",region:"澳洲区",hours:18,count:41,errTotal:0,errRate:0,hssc:0,hsscRate:0,warehouse:0,warehouseRate:0,hrbp:0,hrbpRate:0,supplier:0,supplierRate:0},
-    {bu:"FBU",zone:"亚太区",region:"日本区",hours:4,count:5,errTotal:0,errRate:0,hssc:0,hsscRate:0,warehouse:0,warehouseRate:0,hrbp:0,hrbpRate:0,supplier:0,supplierRate:0},
-    {bu:"FBU",zone:"亚太区",region:"韩国区",hours:0.5,count:1,errTotal:0,errRate:0,hssc:0,hsscRate:0,warehouse:0,warehouseRate:0,hrbp:0,hrbpRate:0,supplier:0,supplierRate:0},
-    {bu:"FBU",zone:"欧洲区",region:"法国区",hours:100,count:37,errTotal:0,errRate:0,hssc:0,hsscRate:0,warehouse:0,warehouseRate:0,hrbp:0,hrbpRate:0,supplier:0,supplierRate:0},
-    {bu:"FBU",zone:"欧洲区",region:"波兰区",hours:70,count:18,errTotal:0,errRate:0,hssc:0,hsscRate:0,warehouse:0,warehouseRate:0,hrbp:0,hrbpRate:0,supplier:0,supplierRate:0},
-    {bu:"FBU",zone:"欧洲区",region:"德国区",hours:85,count:96,errTotal:1,errRate:0.0104,hssc:0,hsscRate:0,warehouse:1,warehouseRate:0.0104,hrbp:0,hrbpRate:0,supplier:0,supplierRate:0},
-    {bu:"FBU",zone:"欧洲区",region:"捷克区",hours:80,count:69,errTotal:0,errRate:0,hssc:0,hsscRate:0,warehouse:0,warehouseRate:0,hrbp:0,hrbpRate:0,supplier:0,supplierRate:0},
-    {bu:"FBU",zone:"欧洲区",region:"英国区",hours:65,count:117,errTotal:20,errRate:0.1709,hssc:0,hsscRate:0,warehouse:4,warehouseRate:0.0342,hrbp:0,hrbpRate:0,supplier:16,supplierRate:0.1368},
-    {bu:"FBU",zone:"欧洲区",region:"西班牙",hours:16,count:14,errTotal:0,errRate:0,hssc:0,hsscRate:0,warehouse:0,warehouseRate:0,hrbp:0,hrbpRate:0,supplier:0,supplierRate:0},
-    {bu:"FBU",zone:"欧洲区",region:"意大利",hours:5,count:3,errTotal:0,errRate:0,hssc:0,hsscRate:0,warehouse:0,warehouseRate:0,hrbp:0,hrbpRate:0,supplier:0,supplierRate:0},
-    {bu:"LBU",zone:"欧洲区",region:"荷兰区",hours:10,count:8,errTotal:0,errRate:0,hssc:0,hsscRate:0,warehouse:0,warehouseRate:0,hrbp:0,hrbpRate:0,supplier:0,supplierRate:0},
-    {bu:"LBU",zone:"欧洲区",region:"瑞士区",hours:5,count:1,errTotal:0,errRate:0,hssc:0,hsscRate:0,warehouse:0,warehouseRate:0,hrbp:0,hrbpRate:0,supplier:0,supplierRate:0},
-    {bu:"LBU",zone:"欧洲区",region:"瑞典区",hours:4,count:2,errTotal:0,errRate:0,hssc:0,hsscRate:0,warehouse:0,warehouseRate:0,hrbp:0,hrbpRate:0,supplier:0,supplierRate:0},
-    {bu:"LBU",zone:"欧洲区",region:"德国区",hours:2,count:4,errTotal:0,errRate:0,hssc:0,hsscRate:0,warehouse:0,warehouseRate:0,hrbp:0,hrbpRate:0,supplier:0,supplierRate:0},
-    {bu:"LBU",zone:"欧洲区",region:"芬兰区",hours:1,count:1,errTotal:0,errRate:0,hssc:0,hsscRate:0,warehouse:0,warehouseRate:0,hrbp:0,hrbpRate:0,supplier:0,supplierRate:0},
-    {bu:"LBU",zone:"欧洲区",region:"挪威区",hours:0,count:0,errTotal:0,errRate:0,hssc:0,hsscRate:0,warehouse:0,warehouseRate:0,hrbp:0,hrbpRate:0,supplier:0,supplierRate:0},
-    {bu:"LBU",zone:"欧洲区",region:"爱尔兰区",hours:4,count:1,errTotal:0,errRate:0,hssc:0,hsscRate:0,warehouse:0,warehouseRate:0,hrbp:0,hrbpRate:0,supplier:0,supplierRate:0},
-    {bu:"LBU",zone:"亚太区",region:"香港",hours:1,count:3,errTotal:0,errRate:0,hssc:0,hsscRate:0,warehouse:0,warehouseRate:0,hrbp:0,hrbpRate:0,supplier:0,supplierRate:0},
-    {bu:"LBU",zone:"亚太区",region:"越南",hours:0.3,count:1,errTotal:0,errRate:0,hssc:0,hsscRate:0,warehouse:0,warehouseRate:0,hrbp:0,hrbpRate:0,supplier:0,supplierRate:0},
-    {bu:"LBU",zone:"亚太区",region:"泰国",hours:0.333,count:1,errTotal:0,errRate:0,hssc:0,hsscRate:0,warehouse:0,warehouseRate:0,hrbp:0,hrbpRate:0,supplier:0,supplierRate:0},
-    {bu:"LBU",zone:"亚太区",region:"韩国",hours:0.333,count:1,errTotal:0,errRate:0,hssc:0,hsscRate:0,warehouse:0,warehouseRate:0,hrbp:0,hrbpRate:0,supplier:0,supplierRate:0},
-    {bu:"PBU",zone:"欧洲区",region:"英国区",hours:10,count:4,errTotal:0,errRate:0,hssc:0,hsscRate:0,warehouse:0,warehouseRate:0,hrbp:0,hrbpRate:0,supplier:0,supplierRate:0},
-    {bu:"PBU",zone:"欧洲区",region:"法国区",hours:4,count:1,errTotal:0,errRate:0,hssc:0,hsscRate:0,warehouse:0,warehouseRate:0,hrbp:0,hrbpRate:0,supplier:0,supplierRate:0},
-    {bu:"PBU",zone:"欧洲区",region:"西班牙区",hours:4,count:2,errTotal:0,errRate:0,hssc:0,hsscRate:0,warehouse:0,warehouseRate:0,hrbp:0,hrbpRate:0,supplier:0,supplierRate:0},
-    {bu:"PBU",zone:"欧洲区",region:"比利时区",hours:10,count:4,errTotal:0,errRate:0,hssc:0,hsscRate:0,warehouse:0,warehouseRate:0,hrbp:0,hrbpRate:0,supplier:0,supplierRate:0},
-    {bu:"PBU",zone:"欧洲区",region:"丹麦区",hours:4,count:6,errTotal:0,errRate:0,hssc:0,hsscRate:0,warehouse:0,warehouseRate:0,hrbp:0,hrbpRate:0,supplier:0,supplierRate:0},
-    {bu:"PBU",zone:"欧洲区",region:"匈牙利",hours:15,count:1,errTotal:0,errRate:0,hssc:0,hsscRate:0,warehouse:0,warehouseRate:0,hrbp:0,hrbpRate:0,supplier:0,supplierRate:0},
-    {bu:"PBU",zone:"欧洲区",region:"意大利",hours:20,count:3,errTotal:0,errRate:0,hssc:0,hsscRate:0,warehouse:0,warehouseRate:0,hrbp:0,hrbpRate:0,supplier:0,supplierRate:0},
-    {bu:"PBU",zone:"欧洲区",region:"荷兰",hours:20,count:4,errTotal:0,errRate:0,hssc:0,hsscRate:0,warehouse:0,warehouseRate:0,hrbp:0,hrbpRate:0,supplier:0,supplierRate:0},
-    {bu:"GUS",zone:"美国",region:"WE 美西大区",hours:100,count:69,errTotal:7,errRate:0.1014,hssc:0,hsscRate:0,warehouse:4,warehouseRate:0.058,hrbp:0,hrbpRate:0,supplier:3,supplierRate:0.0435},
-    {bu:"GUS",zone:"美国",region:"NE 东北区",hours:55,count:97,errTotal:2,errRate:0.0206,hssc:0,hsscRate:0,warehouse:1,warehouseRate:0.0103,hrbp:0,hrbpRate:0,supplier:1,supplierRate:0.0103},
-    {bu:"GUS",zone:"美国",region:"GL 大湖区",hours:18,count:16,errTotal:1,errRate:0.0625,hssc:0,hsscRate:0,warehouse:0,warehouseRate:0,hrbp:0,hrbpRate:0,supplier:1,supplierRate:0.0625},
-    {bu:"GUS",zone:"美国",region:"FL 佛州区",hours:45,count:34,errTotal:1,errRate:0.0294,hssc:0,hsscRate:0,warehouse:1,warehouseRate:0.0294,hrbp:0,hrbpRate:0,supplier:0,supplierRate:0},
-    {bu:"GUS",zone:"美国",region:"MS 中南大区",hours:29,count:35,errTotal:3,errRate:0.0857,hssc:0,hsscRate:0,warehouse:0,warehouseRate:0,hrbp:0,hrbpRate:0,supplier:3,supplierRate:0.0857},
-    {bu:"GUS",zone:"美国",region:"TX 德州大区",hours:41,count:47,errTotal:2,errRate:0.0426,hssc:0,hsscRate:0,warehouse:0,warehouseRate:0,hrbp:0,hrbpRate:0,supplier:2,supplierRate:0.0426},
-    {bu:"GUS",zone:"美国",region:"Ground项目部",hours:65,count:37,errTotal:1,errRate:0.027,hssc:0,hsscRate:0,warehouse:0,warehouseRate:0,hrbp:0,hrbpRate:0,supplier:1,supplierRate:0.027},
-    {bu:"GUS",zone:"美国",region:"客服组",hours:30,count:5,errTotal:0,errRate:0,hssc:0,hsscRate:0,warehouse:0,warehouseRate:0,hrbp:0,hrbpRate:0,supplier:0,supplierRate:0},
-    {bu:"GEU",zone:"欧洲",region:"法国区",hours:140,count:26,errTotal:10,errRate:0.3846,hssc:0,hsscRate:0,warehouse:0,warehouseRate:0,hrbp:0,hrbpRate:0,supplier:10,supplierRate:0.3846},
-    {bu:"GEU",zone:"欧洲",region:"荷兰区",hours:55,count:22,errTotal:2,errRate:0.0909,hssc:0,hsscRate:0,warehouse:0,warehouseRate:0,hrbp:0,hrbpRate:0,supplier:2,supplierRate:0.0909},
-    {bu:"GEU",zone:"欧洲",region:"意大利区",hours:35,count:7,errTotal:0,errRate:0,hssc:0,hsscRate:0,warehouse:0,warehouseRate:0,hrbp:0,hrbpRate:0,supplier:0,supplierRate:0}
+    {bu:"FBU",zone:"美洲区",region:"加州区",hours:130.0,count:354,errTotal:2,errRate:0.00565,hssc:0,hsscRate:0.0,warehouse:2,warehouseRate:0.00565,hrbp:0,hrbpRate:0.0,supplier:0,supplierRate:0.0},
+    {bu:"FBU",zone:"美洲区",region:"新泽西区",hours:113.82,count:227,errTotal:7,errRate:0.030837,hssc:0,hsscRate:0.0,warehouse:0,warehouseRate:0.0,hrbp:0,hrbpRate:0.0,supplier:7,supplierRate:0.030837},
+    {bu:"FBU",zone:"美洲区",region:"加拿大区",hours:30.0,count:60,errTotal:4,errRate:0.066667,hssc:0,hsscRate:0.0,warehouse:1,warehouseRate:0.016667,hrbp:0,hrbpRate:0.0,supplier:3,supplierRate:0.05},
+    {bu:"FBU",zone:"美洲区",region:"芝加哥区",hours:29.5,count:103,errTotal:0,errRate:0.0,hssc:0,hsscRate:0.0,warehouse:0,warehouseRate:0.0,hrbp:0,hrbpRate:0.0,supplier:0,supplierRate:0.0},
+    {bu:"FBU",zone:"美洲区",region:"萨凡纳区",hours:20.93,count:91,errTotal:2,errRate:0.021978,hssc:0,hsscRate:0.0,warehouse:0,warehouseRate:0.0,hrbp:0,hrbpRate:0.0,supplier:2,supplierRate:0.021978},
+    {bu:"FBU",zone:"美洲区",region:"亚特兰大区",hours:16.11,count:60,errTotal:1,errRate:0.016667,hssc:0,hsscRate:0.0,warehouse:1,warehouseRate:0.016667,hrbp:0,hrbpRate:0.0,supplier:0,supplierRate:0.0},
+    {bu:"FBU",zone:"美洲区",region:"达拉斯区",hours:6.56,count:34,errTotal:1,errRate:0.029412,hssc:0,hsscRate:0.0,warehouse:1,warehouseRate:0.029412,hrbp:0,hrbpRate:0.0,supplier:0,supplierRate:0.0},
+    {bu:"FBU",zone:"美洲区",region:"西雅图",hours:4.0,count:6,errTotal:0,errRate:0.0,hssc:0,hsscRate:0.0,warehouse:0,warehouseRate:0.0,hrbp:0,hrbpRate:0.0,supplier:0,supplierRate:0.0},
+    {bu:"FBU",zone:"美洲区",region:"诺福克斯",hours:4.0,count:4,errTotal:0,errRate:0.0,hssc:0,hsscRate:0.0,warehouse:0,warehouseRate:0.0,hrbp:0,hrbpRate:0.0,supplier:0,supplierRate:0.0},
+    {bu:"FBU",zone:"美洲区",region:"休斯顿区",hours:2.63,count:51,errTotal:0,errRate:0.0,hssc:0,hsscRate:0.0,warehouse:0,warehouseRate:0.0,hrbp:0,hrbpRate:0.0,supplier:0,supplierRate:0.0},
+    {bu:"FBU",zone:"美洲区",region:"墨西哥区",hours:2.0,count:0,errTotal:0,errRate:0.0,hssc:0,hsscRate:0.0,warehouse:0,warehouseRate:0.0,hrbp:0,hrbpRate:0.0,supplier:0,supplierRate:0.0},
+    {bu:"FBU",zone:"美洲区",region:"迈阿密",hours:2.0,count:8,errTotal:0,errRate:0.0,hssc:0,hsscRate:0.0,warehouse:0,warehouseRate:0.0,hrbp:0,hrbpRate:0.0,supplier:0,supplierRate:0.0},
+    {bu:"FBU",zone:"亚太区",region:"澳洲区",hours:18.0,count:39,errTotal:1,errRate:0.025641,hssc:0,hsscRate:0.0,warehouse:0,warehouseRate:0.0,hrbp:0,hrbpRate:0.0,supplier:1,supplierRate:0.025641},
+    {bu:"FBU",zone:"亚太区",region:"日本区",hours:4.0,count:5,errTotal:0,errRate:0.0,hssc:0,hsscRate:0.0,warehouse:0,warehouseRate:0.0,hrbp:0,hrbpRate:0.0,supplier:0,supplierRate:0.0},
+    {bu:"FBU",zone:"亚太区",region:"韩国区",hours:0.5,count:2,errTotal:0,errRate:0.0,hssc:0,hsscRate:0.0,warehouse:0,warehouseRate:0.0,hrbp:0,hrbpRate:0.0,supplier:0,supplierRate:0.0},
+    {bu:"FBU",zone:"欧洲区",region:"法国区",hours:100.0,count:49,errTotal:0,errRate:0.0,hssc:0,hsscRate:0.0,warehouse:0,warehouseRate:0.0,hrbp:0,hrbpRate:0.0,supplier:0,supplierRate:0.0},
+    {bu:"FBU",zone:"欧洲区",region:"波兰区",hours:70.0,count:19,errTotal:0,errRate:0.0,hssc:0,hsscRate:0.0,warehouse:0,warehouseRate:0.0,hrbp:0,hrbpRate:0.0,supplier:0,supplierRate:0.0},
+    {bu:"FBU",zone:"欧洲区",region:"德国区",hours:85.0,count:78,errTotal:0,errRate:0.0,hssc:0,hsscRate:0.0,warehouse:0,warehouseRate:0.0,hrbp:0,hrbpRate:0.0,supplier:0,supplierRate:0.0},
+    {bu:"FBU",zone:"欧洲区",region:"捷克区",hours:80.0,count:66,errTotal:0,errRate:0.0,hssc:0,hsscRate:0.0,warehouse:0,warehouseRate:0.0,hrbp:0,hrbpRate:0.0,supplier:0,supplierRate:0.0},
+    {bu:"FBU",zone:"欧洲区",region:"英国区",hours:65.0,count:170,errTotal:9,errRate:0.052941,hssc:0,hsscRate:0.0,warehouse:7,warehouseRate:0.041176,hrbp:0,hrbpRate:0.0,supplier:2,supplierRate:0.011765},
+    {bu:"FBU",zone:"欧洲区",region:"西班牙",hours:16.0,count:8,errTotal:0,errRate:0.0,hssc:0,hsscRate:0.0,warehouse:0,warehouseRate:0.0,hrbp:0,hrbpRate:0.0,supplier:0,supplierRate:0.0},
+    {bu:"FBU",zone:"欧洲区",region:"意大利",hours:5.0,count:2,errTotal:0,errRate:0.0,hssc:0,hsscRate:0.0,warehouse:0,warehouseRate:0.0,hrbp:0,hrbpRate:0.0,supplier:0,supplierRate:0.0},
+    {bu:"LBU",zone:"欧洲区",region:"荷兰区",hours:10.0,count:8,errTotal:0,errRate:0.0,hssc:0,hsscRate:0.0,warehouse:0,warehouseRate:0.0,hrbp:0,hrbpRate:0.0,supplier:0,supplierRate:0.0},
+    {bu:"LBU",zone:"欧洲区",region:"瑞士区",hours:5.0,count:1,errTotal:0,errRate:0.0,hssc:0,hsscRate:0.0,warehouse:0,warehouseRate:0.0,hrbp:0,hrbpRate:0.0,supplier:0,supplierRate:0.0},
+    {bu:"LBU",zone:"欧洲区",region:"瑞典区",hours:4.0,count:2,errTotal:0,errRate:0.0,hssc:0,hsscRate:0.0,warehouse:0,warehouseRate:0.0,hrbp:0,hrbpRate:0.0,supplier:0,supplierRate:0.0},
+    {bu:"LBU",zone:"欧洲区",region:"德国区",hours:2.0,count:6,errTotal:0,errRate:0.0,hssc:0,hsscRate:0.0,warehouse:0,warehouseRate:0.0,hrbp:0,hrbpRate:0.0,supplier:0,supplierRate:0.0},
+    {bu:"LBU",zone:"欧洲区",region:"芬兰区",hours:1.0,count:1,errTotal:0,errRate:0.0,hssc:0,hsscRate:0.0,warehouse:0,warehouseRate:0.0,hrbp:0,hrbpRate:0.0,supplier:0,supplierRate:0.0},
+    {bu:"LBU",zone:"欧洲区",region:"挪威区",hours:0.0,count:0,errTotal:0,errRate:0.0,hssc:0,hsscRate:0.0,warehouse:0,warehouseRate:0.0,hrbp:0,hrbpRate:0.0,supplier:0,supplierRate:0.0},
+    {bu:"LBU",zone:"欧洲区",region:"爱尔兰区",hours:4.0,count:0,errTotal:0,errRate:0.0,hssc:0,hsscRate:0.0,warehouse:0,warehouseRate:0.0,hrbp:0,hrbpRate:0.0,supplier:0,supplierRate:0.0},
+    {bu:"LBU",zone:"亚太区",region:"香港",hours:1.0,count:0,errTotal:0,errRate:0.0,hssc:0,hsscRate:0.0,warehouse:0,warehouseRate:0.0,hrbp:0,hrbpRate:0.0,supplier:0,supplierRate:0.0},
+    {bu:"LBU",zone:"亚太区",region:"越南",hours:0.333333333333333,count:0,errTotal:0,errRate:0.0,hssc:0,hsscRate:0.0,warehouse:0,warehouseRate:0.0,hrbp:0,hrbpRate:0.0,supplier:0,supplierRate:0.0},
+    {bu:"LBU",zone:"亚太区",region:"泰国",hours:0.333333333333333,count:0,errTotal:0,errRate:0.0,hssc:0,hsscRate:0.0,warehouse:0,warehouseRate:0.0,hrbp:0,hrbpRate:0.0,supplier:0,supplierRate:0.0},
+    {bu:"LBU",zone:"亚太区",region:"韩国",hours:0.333333333333333,count:0,errTotal:0,errRate:0.0,hssc:0,hsscRate:0.0,warehouse:0,warehouseRate:0.0,hrbp:0,hrbpRate:0.0,supplier:0,supplierRate:0.0},
+    {bu:"PBU",zone:"欧洲区",region:"英国区",hours:10.0,count:4,errTotal:0,errRate:0.0,hssc:0,hsscRate:0.0,warehouse:0,warehouseRate:0.0,hrbp:0,hrbpRate:0.0,supplier:0,supplierRate:0.0},
+    {bu:"PBU",zone:"欧洲区",region:"法国区",hours:4.0,count:1,errTotal:0,errRate:0.0,hssc:0,hsscRate:0.0,warehouse:0,warehouseRate:0.0,hrbp:0,hrbpRate:0.0,supplier:0,supplierRate:0.0},
+    {bu:"PBU",zone:"欧洲区",region:"西班牙区",hours:4.0,count:2,errTotal:0,errRate:0.0,hssc:0,hsscRate:0.0,warehouse:0,warehouseRate:0.0,hrbp:0,hrbpRate:0.0,supplier:0,supplierRate:0.0},
+    {bu:"PBU",zone:"欧洲区",region:"比利时区",hours:10.0,count:4,errTotal:0,errRate:0.0,hssc:0,hsscRate:0.0,warehouse:0,warehouseRate:0.0,hrbp:0,hrbpRate:0.0,supplier:0,supplierRate:0.0},
+    {bu:"PBU",zone:"欧洲区",region:"丹麦区",hours:4.0,count:6,errTotal:0,errRate:0.0,hssc:0,hsscRate:0.0,warehouse:0,warehouseRate:0.0,hrbp:0,hrbpRate:0.0,supplier:0,supplierRate:0.0},
+    {bu:"PBU",zone:"欧洲区",region:"匈牙利",hours:15.0,count:1,errTotal:0,errRate:0.0,hssc:0,hsscRate:0.0,warehouse:0,warehouseRate:0.0,hrbp:0,hrbpRate:0.0,supplier:0,supplierRate:0.0},
+    {bu:"PBU",zone:"欧洲区",region:"意大利",hours:20.0,count:3,errTotal:0,errRate:0.0,hssc:0,hsscRate:0.0,warehouse:0,warehouseRate:0.0,hrbp:0,hrbpRate:0.0,supplier:0,supplierRate:0.0},
+    {bu:"PBU",zone:"欧洲区",region:"荷兰",hours:20.0,count:4,errTotal:0,errRate:0.0,hssc:0,hsscRate:0.0,warehouse:0,warehouseRate:0.0,hrbp:0,hrbpRate:0.0,supplier:0,supplierRate:0.0},
+    {bu:"GUS",zone:"美国",region:"WE 美西大区",hours:110.0,count:94,errTotal:2,errRate:0.021277,hssc:0,hsscRate:0.0,warehouse:0,warehouseRate:0.0,hrbp:0,hrbpRate:0.0,supplier:2,supplierRate:0.021277},
+    {bu:"GUS",zone:"美国",region:"NE 东北大区",hours:65.0,count:84,errTotal:2,errRate:0.02381,hssc:0,hsscRate:0.0,warehouse:0,warehouseRate:0.0,hrbp:0,hrbpRate:0.0,supplier:2,supplierRate:0.02381},
+    {bu:"GUS",zone:"美国",region:"GL 大湖大区",hours:26.0,count:31,errTotal:0,errRate:0.0,hssc:0,hsscRate:0.0,warehouse:0,warehouseRate:0.0,hrbp:0,hrbpRate:0.0,supplier:0,supplierRate:0.0},
+    {bu:"GUS",zone:"美国",region:"FL 佛州大区",hours:35.0,count:41,errTotal:1,errRate:0.02439,hssc:0,hsscRate:0.0,warehouse:0,warehouseRate:0.0,hrbp:0,hrbpRate:0.0,supplier:1,supplierRate:0.02439},
+    {bu:"GUS",zone:"美国",region:"MS 中南大区",hours:45.0,count:69,errTotal:1,errRate:0.014493,hssc:0,hsscRate:0.0,warehouse:0,warehouseRate:0.0,hrbp:0,hrbpRate:0.0,supplier:1,supplierRate:0.014493},
+    {bu:"GUS",zone:"美国",region:"TX 德州大区",hours:64.0,count:50,errTotal:1,errRate:0.02,hssc:0,hsscRate:0.0,warehouse:0,warehouseRate:0.0,hrbp:0,hrbpRate:0.0,supplier:1,supplierRate:0.02},
+    {bu:"GUS",zone:"美国",region:"PR 波多黎各区",hours:0.0,count:0,errTotal:0,errRate:0.0,hssc:0,hsscRate:0.0,warehouse:0,warehouseRate:0.0,hrbp:0,hrbpRate:0.0,supplier:0,supplierRate:0.0},
+    {bu:"GUS",zone:"美国",region:"Ground项目部",hours:59.0,count:42,errTotal:0,errRate:0.0,hssc:0,hsscRate:0.0,warehouse:0,warehouseRate:0.0,hrbp:0,hrbpRate:0.0,supplier:0,supplierRate:0.0},
+    {bu:"GUS",zone:"美国",region:"客服组",hours:35.0,count:5,errTotal:0,errRate:0.0,hssc:0,hsscRate:0.0,warehouse:0,warehouseRate:0.0,hrbp:0,hrbpRate:0.0,supplier:0,supplierRate:0.0},
+    {bu:"GEU",zone:"欧洲",region:"法国区",hours:130.0,count:27,errTotal:7,errRate:0.259259,hssc:0,hsscRate:0.0,warehouse:0,warehouseRate:0.0,hrbp:0,hrbpRate:0.0,supplier:7,supplierRate:0.259259},
+    {bu:"GEU",zone:"欧洲",region:"荷兰区",hours:45.0,count:11,errTotal:5,errRate:0.454545,hssc:0,hsscRate:0.0,warehouse:0,warehouseRate:0.0,hrbp:0,hrbpRate:0.0,supplier:5,supplierRate:0.454545},
+    {bu:"GEU",zone:"欧洲",region:"意大利区",hours:35.0,count:7,errTotal:1,errRate:0.142857,hssc:0,hsscRate:0.0,warehouse:0,warehouseRate:0.0,hrbp:0,hrbpRate:0.0,supplier:1,supplierRate:0.142857}
   ]
 };
 
@@ -397,11 +339,10 @@ function renderSummary() {
   const wp = totalErr>0?(tw/totalErr*100).toFixed(1):'0';
   const cr = DATA.regions.filter(r=>r.errTotal===0&&r.count>0).length;
   const items = [
-    {bullet:'red', text:`4月报账 <strong>${totalCount}次</strong>，差错 <strong>${totalErr}次</strong>，整体差错率 <strong>${(totalErrRate*100).toFixed(2)}%</strong>。差错集中在供应商端（${ts}次，${sp}%）和仓库端（${tw}次，${wp}%）。`},
-    {bullet:'orange', text:`<b>GEU差错率最高 21.82%</b>，法国区供应商差错10次（差错率${(10/26*100).toFixed(2)}%），需重点介入供应商管理。`},
-    {bullet:'orange', text:`<b>FBU英国区</b>差错20次（差错率17.09%），供应商差错16次+仓库4次，建议开展专项质量审查。`},
-    {bullet:'blue', text:`<b>加拿大区</b>差错率16.67%，<b>GUS美西大区</b>差错率10.14%，需关注报账规范性。`},
-    {bullet:'green', text:`<b>零差错</b>：LBU（11区域）、PBU（8区域）、FBU亚太区（3区域）均零差错，共覆盖 <em>${cr}个区域</em>，建议推广经验。`}
+    {bullet:'red', text:`5月报账 <strong>${totalCount}次</strong>，差错 <strong>${totalErr}次</strong>，整体差错率 <strong>${(totalErrRate*100).toFixed(2)}%</strong>。差错集中在供应商端（${ts}次，${sp}%）和仓库端（${tw}次，${wp}%）。`},
+    {bullet:'orange', text:`<b>GEU差错率最高 28.89%</b>（13次），其中荷兰区差错率45.45%（5次）、法国区25.93%（7次）、意大利区14.29%（1次），差错全部来自供应商端，需重点介入供应商管理。`},
+    {bullet:'orange', text:`<b>FBU加拿大区</b>差错率6.67%（4次，供应商3次+仓库1次）；<b>FBU英国区</b>差错率5.29%（9次，仓库7次占主体），建议对以上区域开展报账规范性审查。`},
+    {bullet:'green', text:`<b>零差错</b>：PBU（8区域）、LBU（5区域）均零差错，FBU芝加哥区、FBU德国区、FBU捷克区、FBU休斯顿区、FBU法国区等区域零差错，共 <em>${cr}个区域</em>未发生差错。`}
   ];
   document.getElementById('summaryContent').innerHTML = items.map(i =>
     `<div class="summary-item"><span class="bullet ${i.bullet}"></span><span>${i.text}</span></div>`
@@ -723,5 +664,5 @@ window.addEventListener('resize',()=>{
   document.querySelectorAll('.chart-wrap').forEach(el=>{const i=echarts.getInstanceByDom(el);if(i)i.resize();});
 });
 </script>
-
-</body></html>
+</body>
+</html>
